@@ -24,6 +24,9 @@ public class NumberTest extends TestCase {
 	public void testConvertNumber() {
 		assertEquals( "1228", Number.convertNumber( 2048, 12 ) );
 		assertFalse( Integer.toBinaryString(123).equals( Number.convertNumber(124, 2) ) );
+		
+		//Edited by oskam:
+		assertNotSame(Number.convertNumber(42,2), Number.convertNumber(42,2));
 	}
 
 	public void testPrintResult() {
