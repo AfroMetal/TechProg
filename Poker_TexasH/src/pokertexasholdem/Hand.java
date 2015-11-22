@@ -1,8 +1,8 @@
 package pokertexasholdem;
 
-public class Hand extends Deck{
+public class Hand {
 
-    private Card[] hand;
+    private Card[] hand; 
     
     public Hand( int cardsAmount, Deck d ) {
         setHand( d.dealCardsFromDeck( cardsAmount ) );

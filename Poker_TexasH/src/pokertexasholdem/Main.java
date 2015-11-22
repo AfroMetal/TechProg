@@ -26,7 +26,7 @@ public class Main {
         System.out.println("--------------------------------Draw first card------------------------------");
         System.out.println( deck.drawFromDeck().toString() );
 
-        System.out.println("----------------------------------Deal 5 cards--------------------------------");
+        System.out.println("----------------------------------Deal " + args[1] + " cards--------------------------------");
         Card[] cardArray1 = deck.dealCardsFromDeck(cardsAmount);
         for( int i=0; i<cardsAmount; i++ ) {
             System.out.println( "Card" + i + ": " + cardArray1[i].toString() );

@@ -3,12 +3,19 @@ package pokertexasholdem;
 public class Card {
 
     public enum Ranks { 
-        RANK2("2"), RANK3("3"), RANK4("4"), RANK5("5"), RANK6("6"), 
-        RANK7("7"), RANK8("8"), RANK9("9"), RANK10("10"), 
-        RANKJ("Jack"), RANKQ("Queen"), RANKK("King"), RANKA("Ace");
+        RANK2("2", 0), RANK3("3", 1), RANK4("4", 2), RANK5("5", 3), RANK6("6", 4), 
+        RANK7("7", 5), RANK8("8", 6), RANK9("9", 7), RANK10("10", 8), 
+        RANKJ("Jack", 9), RANKQ("Queen", 10), RANKK("King", 11), RANKA("Ace", 12);
+        
         private String rankString;
-        private Ranks( String rankString ) {
+        private int rate;
+        
+        private Ranks( String rankString, int rate ) {
             this.rankString = rankString;
+            this.rate = rate;
+        }
+        public int getRate() {
+            return rate;
         }
         @Override
         public String toString() {
@@ -16,8 +23,10 @@ public class Card {
         }
     }
     public enum Suits { 
-        CLUBS("Clubs"), DIAMONDS("Diamonds"), HEARTS("Hearts"), SPADES("Spades");
+        SPADES("of Spades"), CLUBS("of Clubs"), DIAMONDS("of Diamonds"), HEARTS("of Hearts");
+        
         private String suitString;
+        
         private Suits( String suitString ) {
             this.suitString = suitString;
         }
@@ -34,7 +43,11 @@ public class Card {
         this.setRank(rank);
         this.setSuit(suit);
     }
-
+    
+    public int getRate() {
+        return this.getRank().getRate();
+    }
+    
     public Ranks getRank() {
         return rank;
     }
@@ -53,6 +66,6 @@ public class Card {
     
     @Override
     public String toString() {
-        return ( rank.toString() + " of " + suit.toString() );
+        return ( rank.toString() + " " + suit.toString() );
     }
 }
