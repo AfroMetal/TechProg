@@ -51,6 +51,10 @@ public class Player {
 		return hasFolded;
 	}
 	
+	public void pay(int amount) {
+		money -= amount;
+	}
+	
 	public int getMoney() {
 		return money;
 	}
@@ -97,6 +101,6 @@ public class Player {
 	
 	@Override
 	public String toString() {
-		return name;
+		return getName();
 	}
 }
