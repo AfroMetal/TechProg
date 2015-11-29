@@ -38,14 +38,12 @@ public class Main {
         
         deal.dealToPlayers( playersAmount, cardsAmount );
         
-        Card[] cardArray2;
+        Hand playerHand;
         
         for( int i=0; i<playersAmount; i++ ) {
-            cardArray2 = deal.playersMap.get("Player"+i).getHand();
             System.out.println( "Player" + i + ": " );
-            for( int j=0; j<cardsAmount; j++ ) {
-                System.out.println( "   " + cardArray2[j].toString() );
-            }
+            playerHand = deal.playersMap.get("Player"+i);
+            System.out.println( playerHand.toString() );
         }
         
         System.out.println("----------------------------------Actual deck--------------------------------");
