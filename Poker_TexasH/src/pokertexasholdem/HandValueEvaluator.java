@@ -9,7 +9,7 @@ public class HandValueEvaluator {
     //Contains rating of Special Value at index 0, then ratings of Value cards, then other cards sorted high to low
     public int[] ratings;
     //will contain highest evaluated Special Value or High Card if none is found
-    private HandValues evaluatedValue;
+    private HandValue evaluatedValue;
     //array of cards to Evaluate made of 5 board and 2 player cards
     private Card[] cardsToEvaluate;
     
@@ -23,7 +23,7 @@ public class HandValueEvaluator {
         cardsToEvaluate[index] = card;
     }
     
-    public HandValues isSpecialValue() {
+    public HandValue isSpecialValue() {
         //when first (highest) Special Value is evaluated it will trigger if statement and return itself
         //no more Values will be checked
         sortByRank();
@@ -50,7 +50,7 @@ public class HandValueEvaluator {
      */
     public void isHighCard() {
         
-        setEvaluatedValue( HandValues.HIGH_CARD );
+        setEvaluatedValue( HandValue.HIGH_CARD );
         ratings[0] = evaluatedValue.getRate();
         
         int index = 1;
@@ -69,7 +69,7 @@ public class HandValueEvaluator {
             
             if( firstCardRate == secondCardRate ) {
                 int pairRate = firstCardRate;
-                setEvaluatedValue( HandValues.ONE_PAIR );
+                setEvaluatedValue( HandValue.ONE_PAIR );
                 ratings[0] = evaluatedValue.getRate();
                 ratings[1] = pairRate;
                 ratings[2] = pairRate;
@@ -104,7 +104,7 @@ public class HandValueEvaluator {
                     if( pairTwoFirstCardRate == pairTwoSecondCardRate ) {
                         int secondPairRate = pairTwoFirstCardRate;
                         
-                        setEvaluatedValue( HandValues.TWO_PAIR );
+                        setEvaluatedValue( HandValue.TWO_PAIR );
                         ratings[0] = evaluatedValue.getRate();
                         ratings[1] = firstPairRate;
                         ratings[2] = firstPairRate;
@@ -135,7 +135,7 @@ public class HandValueEvaluator {
             
             if( firstCardRate == secondCardRate && secondCardRate == thirdCardRate) {
                 int threeOfAKindRate = firstCardRate;
-                setEvaluatedValue( HandValues.THREE_OF_A_KIND );
+                setEvaluatedValue( HandValue.THREE_OF_A_KIND );
                 ratings[0] = evaluatedValue.getRate();
                 ratings[1] = threeOfAKindRate;
                 ratings[2] = threeOfAKindRate;
@@ -168,7 +168,7 @@ public class HandValueEvaluator {
                 thirdCardRate == fourthCardRate && 
                 fourthCardRate == fifthCardRate 
                 ) {
-                setEvaluatedValue( HandValues.STRAIGHT );
+                setEvaluatedValue( HandValue.STRAIGHT );
                 ratings[0] = evaluatedValue.getRate();
                 for( int j=0; j<=4; j++ ) {
                     ratings[j+1] = cardsToEvaluate[i+j].getRate();
@@ -187,7 +187,7 @@ public class HandValueEvaluator {
                 if( card.getSuit() == suit ) {
                     flushCounter++;
                     if( flushCounter == 5 ) {
-                        setEvaluatedValue( HandValues.FLUSH );
+                        setEvaluatedValue( HandValue.FLUSH );
                         ratings[0] = evaluatedValue.getRate();
                         
                         int index = 1;
@@ -225,7 +225,7 @@ public class HandValueEvaluator {
                         
                         if( pairFirstCardRate == pairSecondCardRate ) {
                             int pairRate = pairFirstCardRate;
-                            setEvaluatedValue( HandValues.FULL_HOUSE );
+                            setEvaluatedValue( HandValue.FULL_HOUSE );
                             ratings[0] = evaluatedValue.getRate();
                             ratings[1] = tripletRate;
                             ratings[2] = tripletRate;
@@ -255,7 +255,7 @@ public class HandValueEvaluator {
                 thirdCardRate == fourthCardRate
                 ) {
                 int fourOfAKindRate = firstCardRate;
-                setEvaluatedValue( HandValues.FOUR_OF_A_KIND );
+                setEvaluatedValue( HandValue.FOUR_OF_A_KIND );
                 ratings[0] = evaluatedValue.getRate();
                 ratings[1] = fourOfAKindRate;
                 ratings[2] = fourOfAKindRate;
@@ -293,7 +293,7 @@ public class HandValueEvaluator {
                     cardsToEvaluate[i+2].getSuit() == cardsToEvaluate[i+3].getSuit() &&
                     cardsToEvaluate[i+3].getSuit() == cardsToEvaluate[i+4].getSuit()
                     ) {
-                    setEvaluatedValue( HandValues.STRAIGHT_FLUSH );
+                    setEvaluatedValue( HandValue.STRAIGHT_FLUSH );
                     ratings[0] = evaluatedValue.getRate();
                     for( int j=0; j<=4; j++ ) {
                         ratings[j+1] = cardsToEvaluate[i+j].getRate();
@@ -310,7 +310,7 @@ public class HandValueEvaluator {
         Arrays.sort( cardsToEvaluate, new RateComparator() );
     }
     
-    public HandValues getSpecialValue() {
+    public HandValue getSpecialValue() {
         return evaluatedValue;
     }
 
@@ -318,7 +318,7 @@ public class HandValueEvaluator {
         return cardsToEvaluate;
     }
     
-    private void setEvaluatedValue( HandValues evaluatedValue ) {
+    private void setEvaluatedValue( HandValue evaluatedValue ) {
         this.evaluatedValue = evaluatedValue;
     }
     

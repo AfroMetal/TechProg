@@ -1,6 +1,6 @@
 package pokertexasholdem;
 
-public enum HandValues {
+public enum HandValue {
     
     STRAIGHT_FLUSH("a Straigh Flush", 8),
     FOUR_OF_A_KIND("Four of a Kind", 7),
@@ -15,7 +15,7 @@ public enum HandValues {
     private String valueString;
     private int rate;
     
-    HandValues( String valueString, int rate ) {
+    HandValue( String valueString, int rate ) {
         this.valueString = valueString;
         this.rate = rate;
     }

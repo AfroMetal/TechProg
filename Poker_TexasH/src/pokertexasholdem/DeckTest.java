@@ -12,8 +12,8 @@ public class DeckTest {
     private static Card.Suits suit;
     private static Deck deck;
     private static Deck deck2;
-    private static Card[] deal1;
-    private static Card[] deal2;
+    //private static Card[] deal1;
+    //private static Card[] deal2;
 
     private static int shuffleTimes = 5;
     private static Card firstCard;
@@ -39,7 +39,7 @@ public class DeckTest {
         assertNotEquals( deck2.getDeckList().toString(), deck.getDeckList().toString() );
     
     }
-    
+    /*
     @Test
     public void testDealCardsFromDeck() {
         //if the 1st card from fresh deck is the 1st dealt card
@@ -56,7 +56,7 @@ public class DeckTest {
         assertNotEquals( deal1[0].toString(), deal2[0].toString() );
         
     }
-    
+    */
     @Test
     public void testDrawFromDeck() {
         //if the 1st card from fresh deck is the 1st drawn card

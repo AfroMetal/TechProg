@@ -39,13 +39,13 @@ public class Deck {
         }        
     }
     
-    public Card[] dealCardsFromDeck( int cardsAmount ) {
+   /* public Card[] dealCardsFromDeck( int cardsAmount ) {
         Card[] dealArray = new Card[cardsAmount];
         for( int i=0; i<cardsAmount; i++ ) {
             dealArray[i] = drawFromDeck();
         }
         return dealArray;
-    }
+    } */
     
     //draw from deckList at index 0, return Card while removing it from deckList
     public Card drawFromDeck() {

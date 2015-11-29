@@ -5,7 +5,6 @@ public class Main {
     public static void main(String[] args) {
         
         int playersAmount = Integer.parseInt(args[0]);
-        int cardsAmount = Integer.parseInt(args[1]);
         
         Deck deck = new Deck();
         
@@ -26,17 +25,20 @@ public class Main {
         System.out.println("--------------------------------Draw first card------------------------------");
         System.out.println( deck.drawFromDeck().toString() );
 
-        System.out.println("----------------------------------Deal " + args[1] + " cards--------------------------------");
-        Card[] cardArray1 = deck.dealCardsFromDeck(cardsAmount);
-        for( int i=0; i<cardsAmount; i++ ) {
-            System.out.println( "Card" + i + ": " + cardArray1[i].toString() );
+        System.out.println("----------------------------------Deal 2 cards--------------------------------");
+        Card[] cardArray = new Card[2];
+        cardArray[0] = deck.drawFromDeck();
+        cardArray[1] = deck.drawFromDeck();
+        
+        for( int i=0; i<2; i++ ) {
+            System.out.println( "Card" + i + ": " + cardArray[i].toString() );
         }
 
         System.out.println("---------------------------------Deal to players------------------------------");
         
         Deal deal = new Deal( deck );
         
-        deal.dealToPlayers( playersAmount, cardsAmount );
+        deal.dealToPlayers( playersAmount );
         
         Hand playerHand;
         

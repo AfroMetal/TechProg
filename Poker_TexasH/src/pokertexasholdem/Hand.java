@@ -2,13 +2,16 @@ package pokertexasholdem;
 
 public class Hand {
 
-    private Card[] hand; 
+    private Card[] hand;
     
-    public Hand( int cardsAmount, Deck d ) {
-        setHand( d.dealCardsFromDeck( cardsAmount ) );
+    public Hand() {
+	}
+     
+    public Hand( Card[] cards ) {
+        setHand(cards);
     }
 
-    public Card[] getHand() {
+	public Card[] getHand() {
         return hand;
     }
 

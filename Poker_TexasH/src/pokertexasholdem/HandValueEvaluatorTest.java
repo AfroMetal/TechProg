@@ -35,7 +35,7 @@ public class HandValueEvaluatorTest {
         handEvaluator.addCardToEvaluate(card5, 5);
         handEvaluator.addCardToEvaluate(card6, 6);
         
-        assertEquals(HandValues.HIGH_CARD, handEvaluator.isSpecialValue());
+        assertEquals(HandValue.HIGH_CARD, handEvaluator.isSpecialValue());
     }
     
     @Test
@@ -96,8 +96,8 @@ public class HandValueEvaluatorTest {
         handEvaluator.sortByRank();
         
         assertEquals(true, handEvaluator.isOnePair());
-        assertEquals(HandValues.ONE_PAIR, handEvaluator.getSpecialValue());
-        assertEquals(HandValues.ONE_PAIR.getRate(), handEvaluator.ratings[0]);
+        assertEquals(HandValue.ONE_PAIR, handEvaluator.getSpecialValue());
+        assertEquals(HandValue.ONE_PAIR.getRate(), handEvaluator.ratings[0]);
         assertEquals(Ranks.RANK3.getRate(), handEvaluator.ratings[1]);
         assertEquals(Ranks.RANK3.getRate(), handEvaluator.ratings[2]);
         assertEquals(Ranks.RANKK.getRate(), handEvaluator.ratings[3]);
@@ -126,8 +126,8 @@ public class HandValueEvaluatorTest {
         handEvaluator.sortByRank();
         
         assertEquals(true, handEvaluator.isTwoPair());
-        assertEquals(HandValues.TWO_PAIR, handEvaluator.getSpecialValue());
-        assertEquals(HandValues.TWO_PAIR.getRate(), handEvaluator.ratings[0]);
+        assertEquals(HandValue.TWO_PAIR, handEvaluator.getSpecialValue());
+        assertEquals(HandValue.TWO_PAIR.getRate(), handEvaluator.ratings[0]);
         assertEquals(Ranks.RANKK.getRate(), handEvaluator.ratings[1]);
         assertEquals(Ranks.RANKK.getRate(), handEvaluator.ratings[2]);
         assertEquals(Ranks.RANK3.getRate(), handEvaluator.ratings[3]);
@@ -156,8 +156,8 @@ public class HandValueEvaluatorTest {
         handEvaluator.sortByRank();
         
         assertEquals(true, handEvaluator.isThreeOfAKind());
-        assertEquals(HandValues.THREE_OF_A_KIND, handEvaluator.getSpecialValue());
-        assertEquals(HandValues.THREE_OF_A_KIND.getRate(), handEvaluator.ratings[0]);
+        assertEquals(HandValue.THREE_OF_A_KIND, handEvaluator.getSpecialValue());
+        assertEquals(HandValue.THREE_OF_A_KIND.getRate(), handEvaluator.ratings[0]);
         assertEquals(Ranks.RANK3.getRate(), handEvaluator.ratings[1]);
         assertEquals(Ranks.RANK3.getRate(), handEvaluator.ratings[2]);
         assertEquals(Ranks.RANK3.getRate(), handEvaluator.ratings[3]);
@@ -186,8 +186,8 @@ public class HandValueEvaluatorTest {
         handEvaluator.sortByRank();
         
         assertEquals(true, handEvaluator.isFourOfAKind());
-        assertEquals(HandValues.FOUR_OF_A_KIND, handEvaluator.getSpecialValue());
-        assertEquals(HandValues.FOUR_OF_A_KIND.getRate(), handEvaluator.ratings[0]);
+        assertEquals(HandValue.FOUR_OF_A_KIND, handEvaluator.getSpecialValue());
+        assertEquals(HandValue.FOUR_OF_A_KIND.getRate(), handEvaluator.ratings[0]);
         assertEquals(Ranks.RANK3.getRate(), handEvaluator.ratings[1]);
         assertEquals(Ranks.RANK3.getRate(), handEvaluator.ratings[2]);
         assertEquals(Ranks.RANK3.getRate(), handEvaluator.ratings[3]);
@@ -216,8 +216,8 @@ public class HandValueEvaluatorTest {
         handEvaluator.sortByRank();
         
         assertEquals(true, handEvaluator.isFullHouse());
-        assertEquals(HandValues.FULL_HOUSE, handEvaluator.getSpecialValue());
-        assertEquals(HandValues.FULL_HOUSE.getRate(), handEvaluator.ratings[0]);
+        assertEquals(HandValue.FULL_HOUSE, handEvaluator.getSpecialValue());
+        assertEquals(HandValue.FULL_HOUSE.getRate(), handEvaluator.ratings[0]);
         assertEquals(Ranks.RANK3.getRate(), handEvaluator.ratings[1]);
         assertEquals(Ranks.RANK3.getRate(), handEvaluator.ratings[2]);
         assertEquals(Ranks.RANK3.getRate(), handEvaluator.ratings[3]);
@@ -246,8 +246,8 @@ public class HandValueEvaluatorTest {
         handEvaluator.sortByRank();
         
         assertEquals(true, handEvaluator.isStraight());
-        assertEquals(HandValues.STRAIGHT, handEvaluator.getSpecialValue());
-        assertEquals(HandValues.STRAIGHT.getRate(), handEvaluator.ratings[0]);
+        assertEquals(HandValue.STRAIGHT, handEvaluator.getSpecialValue());
+        assertEquals(HandValue.STRAIGHT.getRate(), handEvaluator.ratings[0]);
         assertEquals(Ranks.RANKK.getRate(), handEvaluator.ratings[1]);
         assertEquals(Ranks.RANKQ.getRate(), handEvaluator.ratings[2]);
         assertEquals(Ranks.RANKJ.getRate(), handEvaluator.ratings[3]);
@@ -276,8 +276,8 @@ public class HandValueEvaluatorTest {
         handEvaluator.sortByRank();
         
         assertEquals(true, handEvaluator.isFlush());
-        assertEquals(HandValues.FLUSH, handEvaluator.getSpecialValue());
-        assertEquals(HandValues.FLUSH.getRate(), handEvaluator.ratings[0]);
+        assertEquals(HandValue.FLUSH, handEvaluator.getSpecialValue());
+        assertEquals(HandValue.FLUSH.getRate(), handEvaluator.ratings[0]);
         assertEquals(Ranks.RANKK.getRate(), handEvaluator.ratings[1]);
         assertEquals(Ranks.RANKQ.getRate(), handEvaluator.ratings[2]);
         assertEquals(Ranks.RANKJ.getRate(), handEvaluator.ratings[3]);
@@ -306,8 +306,8 @@ public class HandValueEvaluatorTest {
         handEvaluator.sortByRank();
         
         assertEquals(true, handEvaluator.isStraightFlush());
-        assertEquals(HandValues.STRAIGHT_FLUSH, handEvaluator.getSpecialValue());
-        assertEquals(HandValues.STRAIGHT_FLUSH.getRate(), handEvaluator.ratings[0]);
+        assertEquals(HandValue.STRAIGHT_FLUSH, handEvaluator.getSpecialValue());
+        assertEquals(HandValue.STRAIGHT_FLUSH.getRate(), handEvaluator.ratings[0]);
         assertEquals(Ranks.RANKK.getRate(), handEvaluator.ratings[1]);
         assertEquals(Ranks.RANKQ.getRate(), handEvaluator.ratings[2]);
         assertEquals(Ranks.RANKJ.getRate(), handEvaluator.ratings[3]);
