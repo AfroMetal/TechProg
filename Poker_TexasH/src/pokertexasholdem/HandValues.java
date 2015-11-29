@@ -23,8 +23,9 @@ public enum HandValues {
     public int getRate() {
         return rate;
     }
-
-    public String getValueString() {
+    
+    @Override
+    public String toString() {
         return valueString;
     }
 
