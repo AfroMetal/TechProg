@@ -1,184 +1,250 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.9" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="pokertexasholdem.Card" project="Poker_TexasH" 
-    file="/Poker_TexasH/src/pokertexasholdem/Card.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="189" width="126" x="205" y="585"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+  <class id="1" language="java" name="pokertexasholdem.Table" project="Poker_TexasH" 
+    file="/Poker_TexasH/src/pokertexasholdem/Table.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="668" width="357" x="317" y="37"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="2" language="java" name="pokertexasholdem.Card.Ranks" project="Poker_TexasH" 
-    file="/Poker_TexasH/src/pokertexasholdem/Card.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="387" width="119" x="126" y="940"/>    
+  <enumeration id="2" language="java" name="pokertexasholdem.Action" project="Poker_TexasH" 
+    file="/Poker_TexasH/src/pokertexasholdem/Action.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="297" width="132" x="280" y="1280"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <enumeration id="3" language="java" name="pokertexasholdem.Card.Suits" project="Poker_TexasH" 
+  <class id="3" language="java" name="pokertexasholdem.Card" project="Poker_TexasH" 
     file="/Poker_TexasH/src/pokertexasholdem/Card.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="189" width="119" x="285" y="940"/>    
+    <position height="189" width="283" x="515" y="1693"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="4" language="java" name="pokertexasholdem.Card.Ranks" project="Poker_TexasH" 
+    file="/Poker_TexasH/src/pokertexasholdem/Card.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="387" width="119" x="519" y="2044"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="4" language="java" name="pokertexasholdem.Deal" project="Poker_TexasH" 
-    file="/Poker_TexasH/src/pokertexasholdem/Deal.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="149" x="161" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="5" language="java" name="pokertexasholdem.Deck" project="Poker_TexasH" 
-    file="/Poker_TexasH/src/pokertexasholdem/Deck.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="225" width="193" x="45" y="176"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="6" language="java" name="pokertexasholdem.Hand" project="Poker_TexasH" 
-    file="/Poker_TexasH/src/pokertexasholdem/Hand.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="126" x="278" y="176"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="7" language="java" name="pokertexasholdem.HandValueEvaluator" project="Poker_TexasH" 
+  <class id="5" language="java" name="pokertexasholdem.HandValueEvaluator" project="Poker_TexasH" 
     file="/Poker_TexasH/src/pokertexasholdem/HandValueEvaluator.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="369" width="204" x="444" y="176"/>    
+    <position height="369" width="198" x="42" y="1280"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="8" language="java" name="pokertexasholdem.HandValues" project="Poker_TexasH" 
-    file="/Poker_TexasH/src/pokertexasholdem/HandValues.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="315" width="185" x="444" y="585"/>    
+  <enumeration id="6" language="java" name="pokertexasholdem.HandValue" project="Poker_TexasH" 
+    file="/Poker_TexasH/src/pokertexasholdem/HandValue.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="315" width="179" x="42" y="1689"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <association id="9">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="10" name="evaluatedValue"/>      
-      <multiplicity id="11" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <class id="7" language="java" name="pokertexasholdem.Hand" project="Poker_TexasH" 
+    file="/Poker_TexasH/src/pokertexasholdem/Hand.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="126" x="452" y="1280"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="8" language="java" name="pokertexasholdem.Card.Suits" project="Poker_TexasH" 
+    file="/Poker_TexasH/src/pokertexasholdem/Card.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="119" x="678" y="2044"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="9" language="java" name="pokertexasholdem.Deck" project="Poker_TexasH" 
+    file="/Poker_TexasH/src/pokertexasholdem/Deck.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="798" y="1385"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="pokertexasholdem.Player" project="Poker_TexasH" 
+    file="/Poker_TexasH/src/pokertexasholdem/Player.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="495" width="332" x="246" y="745"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="pokertexasholdem.Pot" project="Poker_TexasH" 
+    file="/Poker_TexasH/src/pokertexasholdem/Pot.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="140" y="840"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
   <association id="12">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="13" name="d">        
-        <position height="0" width="0" x="-39" y="-33"/>      
-      </attribute>      
-      <multiplicity id="14" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-39" y="-33"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="15">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="16" name="hand">        
-        <position height="0" width="0" x="31" y="-58"/>      
-      </attribute>      
-      <multiplicity id="17" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="31" y="-58"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="18">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="19" name="playersMap">        
-        <position height="0" width="0" x="156" y="-16"/>      
-      </attribute>      
-      <multiplicity id="20" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="156" y="-16"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="21">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="22" name="deckList">        
-        <position height="0" width="0" x="31" y="-58"/>      
-      </attribute>      
-      <multiplicity id="23" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="31" y="-58"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="24">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="2"/>  
-  </nesting>  
-  <association id="25">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="26" name="cardsToEvaluate"/>      
-      <multiplicity id="27" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="28">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="29" name="rank">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="30" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="31">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="32" name="suit">        
-        <position height="0" width="0" x="-36" y="115"/>      
-      </attribute>      
-      <multiplicity id="33" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-36" y="115"/>      
-      </multiplicity>    
+      <attribute id="13" name="cardsToEvaluate"/>      
+      <multiplicity id="14" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="34">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="3"/>  
-  </nesting>  
-  <association id="35">    
+  <association id="15">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="36" name="dealArray">        
-        <position height="0" width="0" x="31" y="-58"/>      
-      </attribute>      
-      <multiplicity id="37" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="31" y="-58"/>      
-      </multiplicity>    
+      <attribute id="16" name="evaluatedValue"/>      
+      <multiplicity id="17" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="18">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="8"/>  
+  </nesting>  
+  <association id="19">    
+    <bendpoint x="806" y="1669"/>    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="20" name="dealArray"/>      
+      <multiplicity id="21" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="22">    
+    <bendpoint x="494" y="726"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="23" name="dealer"/>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="25">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="26" name="suit"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="28">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="29" name="pot"/>      
+      <multiplicity id="30" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="31">    
+    <bendpoint x="428" y="725"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="32" name="activePlayers"/>      
+      <multiplicity id="33" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="34">    
+    <bendpoint x="583" y="733"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="35" name="playersList"/>      
+      <multiplicity id="36" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="37">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="38" name="rank"/>      
+      <multiplicity id="39" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="40">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </nesting>  
+  <association id="41">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="42" name="lastAction"/>      
+      <multiplicity id="43" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="44">    
+    <bendpoint x="326" y="734"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="45" name="actor"/>      
+      <multiplicity id="46" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="47">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="48" name="deckList"/>      
+      <multiplicity id="49" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="50">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="51" name="hand"/>      
+      <multiplicity id="52" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="53">    
+    <bendpoint x="608" y="745"/>    
+    <bendpoint x="608" y="1280"/>    
+    <bendpoint x="584" y="1563"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="54" name="board"/>      
+      <multiplicity id="55" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="56">    
+    <bendpoint x="629" y="745"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="57" name="deck"/>      
+      <multiplicity id="58" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="59">    
+    <bendpoint x="538" y="1617"/>    
+    <bendpoint x="541" y="1664"/>    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="60" name="hand"/>      
+      <multiplicity id="61" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
