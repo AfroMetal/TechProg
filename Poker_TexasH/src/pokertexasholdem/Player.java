@@ -25,6 +25,7 @@ public class Player {
 	public void resetPlayer() {
 		hasFolded = false;
 		bet = 0;
+		lastAction = null;
 	}
 	
 	public void smallBlind(int smallBlind) {
@@ -44,6 +45,7 @@ public class Player {
 	}
 	
 	public void fold() {
+	        setLastAction(Action.FOLD);
 		hasFolded = true;
 	}
 	
