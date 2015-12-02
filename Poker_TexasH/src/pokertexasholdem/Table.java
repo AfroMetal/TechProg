@@ -1,8 +1,10 @@
 package pokertexasholdem;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class Table {
 	
@@ -38,7 +40,7 @@ public class Table {
 	
 	/** List of pots (main and side pots if exist) */
         //TODO: resolve side pots somehow
-	private Pot pot;
+	private List<Pot> pots;
 	
 	/** Minimum bet in current hand */
 	private int minBet;
@@ -46,13 +48,16 @@ public class Table {
 	/** Current bet in current hand */
 	private int bet;
 	
+	/** Player that bet or raised last */
+	private Player lastBetPlayer;
+	
 	public Table( int playersAmount, int money, int smallBlind ) {
 		this.smallBlind = smallBlind;
 		bigBlind = smallBlind * 2;
 		board = new ArrayList<>();
 		playersList = new ArrayList<>();
 		activePlayers = new ArrayList<>();
-		pot = new Pot();
+		pots = new ArrayList<>();
 		
 		String name;
 		for( int i=0; i<playersAmount; i++ ) {
@@ -106,7 +111,6 @@ public class Table {
 		betting();
 		
 		//FLOP, deal 3 cards to board
-		bet = 0;
 		dealCommunityCards( 3 );
 		
 		betting();
@@ -131,7 +135,7 @@ public class Table {
         private void resetRound() {
     		//Preparing table for next hand
                 board.clear();
-                pot.clearPot();
+                pots.clear();
     		
     		//Rotate dealer
     		nextDealer();
@@ -147,12 +151,12 @@ public class Table {
         
         private void postSmallBlind() {
             actor.smallBlind(smallBlind);
-            pot.addToPot(smallBlind);
+            contributePot(smallBlind);
         }
         
         private void postBigBlind() {
             actor.bigBlind(bigBlind);
-            pot.addToPot(bigBlind);           
+            contributePot(bigBlind);
         }
         
         private void dealCards() {
@@ -164,13 +168,140 @@ public class Table {
             }
         }   
         
-         private void betting() {
+        private void betting() {
+            int playersToBet = activePlayersNum;
             
+            // if it's not the first betting, reset bet and set actor to next to dealer
+            // if it is a first betting bet and actor were set earlier to proper ones
+            if( board.size() != 0 ) {
+                bet = 0;
+                nextActor(dealer);
+            }
+            
+            lastBetPlayer = null;
+            
+            while( playersToBet > 0 ) {
+                Action action;
+                
+                // Actor is all-in, so he checks
+                if( actor.getLastAction().equals(Action.ALL_IN) ) {
+                    action = Action.CHECK;
+                    playersToBet--;
+                }
+                // Actor can choose how to act
+                else {
+                    Set<Action> legalActions = getLegalActions(actor);
+                    action = null;//TODO: get action from Client
+                    playersToBet--;
+                    
+                    if( action == Action.CHECK ) {
+                        // nothing to do, dude
+                    }
+                    else if( action == Action.CALL ) {
+                        int toSettleBet = ( bet - actor.getBet() );
+                        actor.pay( toSettleBet );
+                        actor.setBet( actor.getBet() + toSettleBet );
+                        contributePot( toSettleBet );
+                    }
+                    else if( action == Action.BET ) {
+                        int betAmount = 0;//TODO: equals to bet send by Client;
+                        actor.setBet(betAmount);
+                        actor.pay(betAmount);
+                        contributePot(betAmount);
+                        bet = betAmount;
+                        minBet = betAmount;
+                        lastBetPlayer = actor;
+                        // all players get another round
+                        playersToBet = activePlayersNum;
+                    }
+                    else if( action == Action.RAISE ) {
+                        int raiseAmount = 0;//TODO: equals to raise send by Client
+                        bet += raiseAmount;
+                        minBet = raiseAmount;
+                        int toRaiseBet = ( bet - actor.getBet() );
+                        actor.setBet(bet);
+                        actor.pay(toRaiseBet);
+                        contributePot(toRaiseBet);
+                        lastBetPlayer = actor;
+                        // all players get another round
+                        playersToBet = activePlayersNum;
+                    }
+                    else if( action == Action.FOLD ) {
+                        actor.setHand(null);
+                        activePlayers.remove(actor);
+                        activePlayersNum = activePlayers.size();
+                        actorPosition--;
+                        
+                        // only one player left, give him the money
+                        if( activePlayersNum == 1 ) {
+                            Player winner = activePlayers.get(0);
+                            int winAmount = getTotalPot();
+                            winner.win(winAmount);
+                            playersToBet = 0;
+                        }
+                    }
+                }
+                actor.setLastAction(action);
+                if( playersToBet > 0 ) {
+                    //TODO: refresh board/client NOTIFY
+                }
+            }
+            
+            // reset bets
+            for( Player player : activePlayers ) {
+                player.setBet(0);
+                player.setLastAction(null);
+            }
         
         }   
          
+        private int getTotalPot() {
+            int total = 0;
+            for( Pot pot : pots ) {
+                total += pot.getValue();
+            }
+            return total;
+        }
+
+        private Set<Action> getLegalActions(Player actor) {
+            Set<Action> legalActions = new HashSet<>();
+            // if player is all-in he can only check and wait for showdown
+            if( actor.getLastAction() == Action.ALL_IN ) {
+                legalActions.add(Action.CHECK);
+            }
+            // else if player is not all-in and can something more
+            else {
+                // if no bet was placed yet (so no first betting as then it is equal to big blind)
+                if( bet == 0 ) {
+                    legalActions.add(Action.CHECK);
+                    legalActions.add(Action.BET);
+                }
+                // if there is some bet posted
+                // and actor have more money than difference between his and table bet
+                else if( ( bet - actor.getBet() ) < actor.getMoney() ) {
+                    // and actor's bet is not equal to that on table
+                    if( actor.getBet() < bet ) {
+                        legalActions.add(Action.CALL);
+                        legalActions.add(Action.RAISE);
+                    }
+                    // or his bet is equal to that on table
+                    else {
+                        legalActions.add(Action.CHECK);
+                        legalActions.add(Action.RAISE);
+                    }
+                }
+                // if actor have money equal to difference between his and table bet
+                else if ( ( bet - actor.getBet() ) == actor.getMoney() ){
+                    legalActions.add(Action.CALL);
+                }
+                // and every active not all-in player can fold and go all-in
+                legalActions.add(Action.ALL_IN);
+                legalActions.add(Action.FOLD);
+            }
+            return legalActions;
+        }
+
         private void dealCommunityCards(int amount) {
-            
 	    for( int j = 0; j < amount; j++ ) {
 	        board.add( deck.drawFromDeck() );
 	    }
@@ -180,6 +311,31 @@ public class Table {
         private void showdown() {
         // TODO Auto-generated method stub
         
+        }
+        
+        private void contributePot( int amount ) {
+            for( Pot pot : pots ) {
+                if( !pot.hasContributed(actor) ) {
+                    // regular call/bet/raise
+                    if( amount >= pot.getBet() ) {
+                        pot.addContributor(actor);
+                        amount -= pot.getBet();
+                    }
+                    // partial call (all-in), split pot
+                    else {
+                        pots.add( pot.split(actor, amount) );
+                        amount = 0;
+                    }
+                }
+                if( amount <= 0 ) {
+                    break;
+                }
+            }
+            if( amount > 0 ) {
+                Pot pot = new Pot(amount);
+                pot.addContributor(actor);
+                pots.add(pot);
+            }
         }
         
         private void nextDealer() {
@@ -276,8 +432,8 @@ public class Table {
         /**
          * @return the pot
          */
-        public Pot getPot() {
-            return pot;
+        public List<Pot> getPots() {
+            return pots;
         }
 
         /**
