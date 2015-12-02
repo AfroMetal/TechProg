@@ -11,22 +11,21 @@ public class PotTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		pot = new Pot();
+		pot = new Pot(0);
 	}
 	
 	@Test
 	public void test() {
-		assertEquals(0, pot.getPot());
+		assertEquals(0, pot.getBet());
 		
 		pot.addToPot(20);
-		assertEquals(20, pot.getPot());
-		assertEquals("Current pot = 20", pot.toString());
+		assertEquals(20, pot.getBet());
 		
 		pot.clearPot();
-		assertEquals(0, pot.getPot());
+		assertEquals(0, pot.getBet());
 		
 		pot.setPot(40);
-		assertEquals(40, pot.getPot());
+		assertEquals(40, pot.getBet());
 	}
 
 }
