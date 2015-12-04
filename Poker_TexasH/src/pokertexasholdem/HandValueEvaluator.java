@@ -1,23 +1,55 @@
 package pokertexasholdem;
 
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import pokertexasholdem.Card.Suits;
 
 public class HandValueEvaluator {
 
-	// Contains rating of Special Value at index 0, then ratings of Value cards,
-	// then other cards sorted high to low
+	/**
+	 * Contains rating of Special Value at index 0, then ratings of Value cards,
+	 * then other cards sorted high to low
+	 */
 	public int[] ratings;
-	// will contain highest evaluated Special Value or High Card if none is
-	// found
+	/**
+	 * Will contain highest evaluated Special Value or High Card if none is
+	 * found
+	 */
 	private HandValue evaluatedValue;
-	// array of cards to Evaluate made of 5 board and 2 player cards
+	/**
+	 * Will be calculated value of all ratings used to compare hands
+	 */
+	private int summaryValue = 0;
+	/**
+	 * Array of cards to Evaluate made of 5 board and 2 player cards
+	 */
 	private Card[] cardsToEvaluate;
+	/**
+	 * Hand value factors to assure more important cards are more important
+	 * (there are rates from 0-12 so multiplying by 13^rateimportancein6rates
+	 * will do)
+	 */
+	private final int[] FACTORS = { 371293, 28561, 2197, 169, 13, 1 };
 
 	public HandValueEvaluator() {
 		cardsToEvaluate = new Card[7];
 		ratings = new int[6];
+	}
+
+	public HandValueEvaluator(ArrayList<Card> board, Hand hand) {
+		cardsToEvaluate = new Card[7];
+		ratings = new int[6];
+		int index = 0;
+		for (Card card : board) {
+			addCardToEvaluate(card, index);
+			index++;
+		}
+		for (Card card : hand.getHand()) {
+			addCardToEvaluate(card, index);
+			index++;
+		}
 	}
 
 	// allows to add Board cards and Player cards to make 7 cards array to
@@ -26,25 +58,35 @@ public class HandValueEvaluator {
 		cardsToEvaluate[index] = card;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public void calculateSummaryValue(){
+		for(int i = 0; i < ratings.length; i++ ){
+			summaryValue += ratings[i] * FACTORS[i];
+		}
+	}
+	
+	/**
+	 * Checks all possible values
+	 * 
+	 * @return found value
+	 */
 	public HandValue isSpecialValue() {
 		// when first (highest) Special Value is evaluated it will trigger if
 		// statement and return itself
 		// no more Values will be checked
 		sortByRank();
-		if (isStraightFlush() || 
-			isFourOfAKind() || 
-			isFullHouse() || 
-			isFlush() || 
-			isStraight() || 
-			isThreeOfAKind() || 
-			isTwoPair() ||
-			isOnePair()
-			) {
+		if (isStraightFlush() || isFourOfAKind() || isFullHouse() || isFlush() || isStraight() || isThreeOfAKind()
+				|| isTwoPair() || isOnePair()) {
+			calculateSummaryValue();
 			return evaluatedValue;
 		}
 		// when no Special Value is found, High Card is triggered
 		else {
 			isHighCard();
+			calculateSummaryValue();
 			return evaluatedValue;
 		}
 	}
@@ -318,6 +360,10 @@ public class HandValueEvaluator {
 
 	private void setEvaluatedValue(HandValue evaluatedValue) {
 		this.evaluatedValue = evaluatedValue;
+	}
+	
+	public int getSummaryValue() {
+		return summaryValue;
 	}
 
 }
