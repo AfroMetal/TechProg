@@ -10,7 +10,7 @@ import pokertexasholdem.Card.Ranks;
 import pokertexasholdem.Card.Suits;
 
 public class PlayerTest {
-	
+
 	private static Player player;
 	private static String name;
 	private static int money;
@@ -20,7 +20,7 @@ public class PlayerTest {
 	private static Card[] cards1;
 	private static Card[] cards2;
 	private static Hand hand;
-	
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		name = "Player1";
@@ -43,7 +43,7 @@ public class PlayerTest {
 		player.setHandCards(cards1);
 		assertEquals(cards1.toString(), player.getHandCards().toString());
 	}
-	
+
 	@Test
 	public void testSetGetHand() {
 		cards2 = new Card[2];
@@ -53,7 +53,7 @@ public class PlayerTest {
 		player.setHand(hand);
 		assertEquals(hand.toString(), player.getHand().toString());
 	}
-	
+
 	@Test
 	public void testPlayer() {
 		assertFalse(player.hasFolded());
@@ -62,32 +62,32 @@ public class PlayerTest {
 		player.resetPlayer();
 		assertFalse(player.hasFolded());
 		assertEquals(0, player.getBet());
-		
+
 		player.setBet(100);
 		assertEquals(100, player.getBet());
-		
+
 		player.resetPlayer();
 		player.pay(200);
 		actualMoney -= 200;
 		assertEquals(actualMoney, player.getMoney());
-		
+
 		player.smallBlind(smallBlind);
 		actualMoney -= smallBlind;
 		assertEquals(actualMoney, player.getMoney());
 		assertEquals(smallBlind, player.getBet());
 		assertEquals(Action.SMALL_BLIND, player.getLastAction());
-		
+
 		player.resetPlayer();
 		player.bigBlind(bigBlind);
 		actualMoney -= bigBlind;
 		assertEquals(actualMoney, player.getMoney());
 		assertEquals(bigBlind, player.getBet());
 		assertEquals(Action.BIG_BLIND, player.getLastAction());
-		
+
 		player.win(money);
 		actualMoney += money;
 		assertEquals(actualMoney, player.getMoney());
-		
+
 		assertEquals(name, player.toString());
 	}
 }

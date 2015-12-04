@@ -2,61 +2,61 @@ package pokertexasholdem;
 
 public class Player {
 	private final String name;
-	
+
 	private Hand hand;
-	
+
 	private int money;
-	
+
 	private boolean hasFolded;
-	
+
 	private int bet;
-	
+
 	private Action lastAction;
-	
-	public Player( String name, int money ) {
+
+	public Player(String name, int money) {
 		this.name = name;
 		setMoney(money);
 		setBet(0);
-		
+
 		hand = new Hand();
 		hasFolded = false;
 	}
-	
+
 	public void resetPlayer() {
 		hasFolded = false;
 		bet = 0;
 		lastAction = null;
 	}
-	
+
 	public void smallBlind(int smallBlind) {
 		setLastAction(Action.SMALL_BLIND);
 		money -= smallBlind;
-		bet += smallBlind; 
+		bet += smallBlind;
 	}
-	
+
 	public void bigBlind(int bigBlind) {
 		setLastAction(Action.BIG_BLIND);
 		money -= bigBlind;
 		bet += bigBlind;
 	}
-	
+
 	public void win(int amount) {
 		money += amount;
 	}
-	
+
 	public void fold() {
-	        setLastAction(Action.FOLD);
+		setLastAction(Action.FOLD);
 		hasFolded = true;
 	}
-	
+
 	public boolean hasFolded() {
 		return hasFolded;
 	}
-	
+
 	public void pay(int amount) {
 		money -= amount;
 	}
-	
+
 	public int getMoney() {
 		return money;
 	}
@@ -80,15 +80,15 @@ public class Player {
 	public Hand getHand() {
 		return hand;
 	}
-	
+
 	public void setHand(Hand hand) {
 		this.hand = hand;
 	}
-	
+
 	public Card[] getHandCards() {
 		return hand.getHand();
 	}
-	
+
 	public void setHandCards(Card[] cards) {
 		hand.setHand(cards);
 	}
@@ -100,7 +100,7 @@ public class Player {
 	public void setBet(int bet) {
 		this.bet = bet;
 	}
-	
+
 	@Override
 	public String toString() {
 		return getName();
