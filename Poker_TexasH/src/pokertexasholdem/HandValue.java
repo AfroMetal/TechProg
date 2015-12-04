@@ -14,7 +14,7 @@ public enum HandValue {
 
 	private String valueString;
 	private int rate;
-
+	
 	HandValue(String valueString, int rate) {
 		this.valueString = valueString;
 		this.rate = rate;
