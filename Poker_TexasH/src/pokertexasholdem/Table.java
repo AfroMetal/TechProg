@@ -1,10 +1,14 @@
 package pokertexasholdem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class Table {
 
@@ -46,9 +50,6 @@ public class Table {
 
 	/** Current bet in current hand */
 	private int bet;
-
-	/** Player that bet or raised last */
-	private Player lastBetPlayer;
 
 	/**
 	 * Constructor of table
@@ -142,6 +143,7 @@ public class Table {
 		betting();
 
 		// SHOWDOWN, evaluate players
+		showdown();
 
 	}
 
@@ -208,8 +210,6 @@ public class Table {
 			nextActor(dealer);
 		}
 
-		lastBetPlayer = null;
-
 		while (playersToBet > 0) {
 			Action action;
 
@@ -238,7 +238,6 @@ public class Table {
 					contributePot(betAmount);
 					bet = betAmount;
 					minBet = betAmount;
-					lastBetPlayer = actor;
 					// all players get another round
 					playersToBet = activePlayersNum;
 				} else if (action == Action.RAISE) {
@@ -249,7 +248,6 @@ public class Table {
 					actor.setBet(bet);
 					actor.pay(toRaiseBet);
 					contributePot(toRaiseBet);
-					lastBetPlayer = actor;
 					// all players get another round
 					playersToBet = activePlayersNum;
 				} else if (action == Action.FOLD) {
@@ -343,7 +341,7 @@ public class Table {
 	 * Deals community cards amount to board
 	 * 
 	 * @param amount
-	 *            num of cards to deal
+	 *            number of cards to deal
 	 */
 	private void dealCommunityCards(int amount) {
 		for (int j = 0; j < amount; j++) {
@@ -356,7 +354,79 @@ public class Table {
 	 */
 	private void showdown() {
 		// TODO Auto-generated method stub
+		int bestHandValue = 0;
+		/**
+		 * TreeMap of summary hand values that finally settles winers order for
+		 * each summaryHandValue there is HashMap that keeps players with that
+		 * summaryHandValue and their HandValue
+		 */
+		TreeMap<Integer, HashMap<Player, HandValue>> playersRanking = new TreeMap<>();
+		for (Player player : activePlayers) {
+			int summaryValue;
+			HandValue handValue;
+			HandValueEvaluator evaluator = new HandValueEvaluator((ArrayList<Card>) board, player.getHand());
+			handValue = evaluator.isSpecialValue();
+			summaryValue = evaluator.getSummaryValue();
+			HashMap<Player, HandValue> playersMap = playersRanking.get(summaryValue);
 
+			if (playersMap == null) {
+				playersMap = new HashMap<>();
+			}
+
+			playersMap.put(player, handValue);
+			playersRanking.put(summaryValue, playersMap);
+		}
+
+		int totalPot = getTotalPot();
+		Map<Player, Integer> potsDistribution = new HashMap<>();
+
+		for (Integer summaryValue : playersRanking.descendingKeySet()) {
+			Set<Player> winners = playersRanking.get(summaryValue).keySet();
+
+			for (Pot pot : pots) {
+				// find how many winners share this pot
+				int potWinningContributors = 0;
+				for (Player winner : winners) {
+					if (pot.hasContributed(winner)) {
+						potWinningContributors++;
+					}
+				}
+				if (potWinningContributors > 0) {
+					// Distributing pots
+					int potWinning = (pot.getValue() / potWinningContributors);
+					for (Player contributingWinner : winners) {
+						if (pot.hasContributed(contributingWinner)) {
+							if (potsDistribution.containsKey(contributingWinner)) {
+								int oldWinning = potsDistribution.get(contributingWinner);
+								potsDistribution.put(contributingWinner, (oldWinning + potWinning));
+							} else {
+								potsDistribution.put(contributingWinner, potWinning);
+							}
+						}
+					}
+					// If anything is left in pot from dividing whole numbers..
+					int potLeftovers = (pot.getValue() % potWinningContributors);
+					if (potLeftovers > 0) {
+						nextActor(dealer);
+						while (potLeftovers > 0) {
+							if (potsDistribution.containsKey(actor)) {
+								int oldWinning = potsDistribution.get(actor);
+								potsDistribution.put(actor, (oldWinning + 1));
+								potLeftovers--;
+								nextActor(actor);
+							}
+						}
+					}
+					pot.clearPot();
+				}
+			}
+		}
+
+		// Distributing winnings to winners
+		for (Player winner : potsDistribution.keySet()) {
+			int potWinning = potsDistribution.get(winner);
+			winner.win(potWinning);
+		}
 	}
 
 	/**
