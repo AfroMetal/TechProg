@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.NavigableMap;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
@@ -78,26 +77,32 @@ public class Table {
 		Random random = new Random();
 		dealerPosition = random.nextInt(playersAmount);
 		dealer = playersList.get(dealerPosition);
+		System.out.println("[TABLE] Constructed");
 	}
 
 	/**
 	 * Main game loop
 	 */
 	public void run() {
+	        System.out.println("[RUN] Starting main game loop");
 		while (true) {
 			activePlayersNum = 0;
 			activePlayers.clear();
+			System.out.println("[RUN] Active players are:");
 			for (Player player : playersList) {
 				player.resetPlayer();
 				if (player.getMoney() >= bigBlind) {
 					activePlayersNum++;
 					activePlayers.add(player);
+					System.out.println("[RUN]   " + player.toString());
 				}
 			}
 
 			if (activePlayersNum > 1) {
-				playRound();
+			         playRound();
+			         System.out.println("[RUN] Called method playRound()");
 			} else {
+			        System.out.println("[RUN] Only one active player");
 				break;
 			}
 		}
@@ -110,7 +115,8 @@ public class Table {
 	 * Single round ended with showdown
 	 */
 	private void playRound() {
-		resetRound();
+	        resetRound();
+	        System.out.println("[ROUND] Reset done - new round");
 
 		// current actor posts small blind, next one posts big blind
 		postSmallBlind();
@@ -118,32 +124,42 @@ public class Table {
 
 		postBigBlind();
 		nextActor(actor);
-
+		System.out.println("[ROUND] Blinds posted");
+		
 		// deal cards to active players
 		dealCards();
-
+		System.out.println("[ROUND] Cards dealt");
+		
 		// do first betting round
 		betting();
-
+		System.out.println("[ROUND] 1st betting ended");
+		
 		// FLOP, deal 3 cards to board
 		dealCommunityCards(3);
-
+		System.out.println("[ROUND] Flop dealt");
+		
 		betting();
-
+		System.out.println("[ROUND] 2nd betting ended");
+		
 		// TURN, deal one card to board
 		dealCommunityCards(1);
+		System.out.println("[ROUND] Turn dealt");
 
 		// do second betting
 		betting();
+		System.out.println("[ROUND] 3rd betting ended");
 
 		// RIVER, deal one card to board
 		dealCommunityCards(1);
+		System.out.println("[ROUND] River dealt");
 
 		// do third, last betting
 		betting();
+		System.out.println("[ROUND] 4th betting ended");
 
 		// SHOWDOWN, evaluate players
 		showdown();
+		System.out.println("[ROUND] Showdown ended");
 
 	}
 
@@ -154,17 +170,23 @@ public class Table {
 		// Preparing table for next hand
 		board.clear();
 		pots.clear();
+		System.out.println("[RESET] Board and pots cleared");
 
 		// Rotate dealer
 		nextDealer();
+		System.out.println("[RESET] Dealer moved");
 		// Set actor to player next to dealer
 		nextActor(dealer);
+		System.out.println("[RESET] Player set next to dealer");
 		// Shuffle deck
 		deck = new Deck();
+		System.out.println("[RESET] Deck created");
 		deck.shuffleDeck(3);
+		System.out.println("[RESET] Deck shuffled");
 		// Set bets
 		minBet = bigBlind;
 		bet = minBet;
+		System.out.println("[RESET] Bets set");
 	}
 
 	/**
@@ -221,7 +243,7 @@ public class Table {
 			// Actor can choose how to act
 			else {
 				Set<Action> legalActions = getLegalActions(actor);
-				action = null;// TODO: get action from Client
+				action = null;// TODO: get action from Client, first send him legalActions
 				playersToBet--;
 
 				if (action == Action.CHECK) {
@@ -353,8 +375,6 @@ public class Table {
 	 * Deals money to winners
 	 */
 	private void showdown() {
-		// TODO Auto-generated method stub
-		int bestHandValue = 0;
 		/**
 		 * TreeMap of summary hand values that finally settles winers order for
 		 * each summaryHandValue there is HashMap that keeps players with that
@@ -377,7 +397,6 @@ public class Table {
 			playersRanking.put(summaryValue, playersMap);
 		}
 
-		int totalPot = getTotalPot();
 		Map<Player, Integer> potsDistribution = new HashMap<>();
 
 		for (Integer summaryValue : playersRanking.descendingKeySet()) {

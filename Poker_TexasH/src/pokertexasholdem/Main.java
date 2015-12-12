@@ -4,8 +4,6 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		int playersAmount = Integer.parseInt(args[0]);
-
 		Deck deck = new Deck();
 
 		System.out.println("----------------------------------New deck----------------------------------");
