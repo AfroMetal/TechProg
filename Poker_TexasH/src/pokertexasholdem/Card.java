@@ -12,10 +12,10 @@ public class Card {
 		RANK8("8", 6), 
 		RANK9("9", 7), 
 		RANK10("10", 8), 
-		RANKJ("Jack", 9), 
-		RANKQ("Queen", 10), 
-		RANKK("King", 11), 
-		RANKA("Ace", 12);
+		RANKJ("J", 9), 
+		RANKQ("Q", 10), 
+		RANKK("K", 11), 
+		RANKA("A", 12);
 
 		private String rankString;
 		private int rate;
@@ -36,10 +36,11 @@ public class Card {
 	}
 
 	public enum Suits {
-		SPADES("of Spades"), 
-		CLUBS("of Clubs"), 
-		DIAMONDS("of Diamonds"), 
-		HEARTS("of Hearts");
+	        // ♠♣♥♦
+		SPADES("♠"), 
+		CLUBS("♣"), 
+		DIAMONDS("♦"), 
+		HEARTS("♥");
 
 		private String suitString;
 
@@ -83,6 +84,6 @@ public class Card {
 
 	@Override
 	public String toString() {
-		return (rank.toString() + " " + suit.toString());
+		return (rank.toString() + suit.toString());
 	}
 }
