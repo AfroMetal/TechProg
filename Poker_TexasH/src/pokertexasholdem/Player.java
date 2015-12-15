@@ -1,7 +1,11 @@
 package pokertexasholdem;
 
+import java.net.Socket;
+
 public class Player {
 	private final String name;
+	
+	private final Socket socket;
 
 	private Hand hand;
 
@@ -13,13 +17,16 @@ public class Player {
 
 	private Action lastAction;
 
-	public Player(String name, int money) {
+	public Player(String name, Socket socket, int money) {
 		this.name = name;
+		this.socket = socket;
 		setMoney(money);
 		setBet(0);
 
 		hand = new Hand();
 		hasFolded = false;
+		
+		System.out.println("[PLAYER] " + name + " joined table.");
 	}
 
 	public void resetPlayer() {
@@ -77,6 +84,10 @@ public class Player {
 		return name;
 	}
 
+	public Socket getSocket() {
+	        return socket;
+	}
+	    
 	public Hand getHand() {
 		return hand;
 	}
