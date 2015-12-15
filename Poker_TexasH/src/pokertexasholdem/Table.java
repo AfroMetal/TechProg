@@ -60,6 +60,7 @@ public class Table {
 	 * @param smallBlind
 	 *            amount of small blind in game
 	 */
+	//TODO ogarnac konstruktor do serwera
 	public Table(int playersAmount, int money, int smallBlind) {
 		this.smallBlind = smallBlind;
 		bigBlind = smallBlind * 2;
