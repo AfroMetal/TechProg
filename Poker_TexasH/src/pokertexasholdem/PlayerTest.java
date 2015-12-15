@@ -2,6 +2,8 @@ package pokertexasholdem;
 
 import static org.junit.Assert.*;
 
+import java.net.Socket;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,6 +22,7 @@ public class PlayerTest {
 	private static Card[] cards1;
 	private static Card[] cards2;
 	private static Hand hand;
+	private static Socket socket = null;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -32,7 +35,7 @@ public class PlayerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		player = new Player(name, money);
+		player = new Player(name, socket, money);
 	}
 
 	@Test
