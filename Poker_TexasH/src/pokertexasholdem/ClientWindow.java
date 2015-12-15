@@ -1,6 +1,5 @@
 package pokertexasholdem;
 
-import java.awt.EventQueue;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,9 +27,10 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import java.awt.Cursor;
 
-public class ClientWindow {
+public class ClientWindow extends JFrame implements ActionListener{
     
-    private JFrame frame;
+    private static final long serialVersionUID = -3284948846300183038L;
+    private Client client;
     private Map<String, JLabel> mapLblDealer= new HashMap<String, JLabel>();
     private Map<String, JLabel> mapLblName= new HashMap<String, JLabel>();
     private Map<String, JLabel> mapLblMoney= new HashMap<String, JLabel>();
@@ -39,28 +39,13 @@ public class ClientWindow {
     private Map<String, JLabel> mapLblCardPlayer= new HashMap<String, JLabel>();
     private Map<String, JLabel> mapLblCardCommunity= new HashMap<String, JLabel>();
     private JFormattedTextField spinnerTextField;
-    private JLabel lblCard1, lblCard2;
-    
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    ClientWindow window = new ClientWindow();
-                    window.frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+    private JLabel lblCard1, lblCard2, lblInfo, lblPotValue;
     
     /**
      * Create the application.
      */
-    public ClientWindow() {
+    public ClientWindow(Client client) {
+        this.client = client;
         initialize();
     }
     
@@ -68,19 +53,25 @@ public class ClientWindow {
      * Initialize the contents of the frame.
      */
     private void initialize() {
-        frame = new JFrame();
-        frame.getContentPane().setBackground(new Color(35, 70, 35));
-        frame.getContentPane().setBounds(new Rectangle(0, 0, 1000, 700));
-        frame.setResizable(false);
-        frame.setBounds(100, 100, 1010, 750);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().setLayout(null);
+        getContentPane().setBackground(new Color(35, 70, 35));
+        getContentPane().setBounds(new Rectangle(0, 0, 1000, 700));
+        setResizable(false);
+        setBounds(100, 100, 1010, 750);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().setLayout(null);
         
         JPanel playersDataPanel = new JPanel();
         playersDataPanel.setBackground(new Color(35, 70, 35));
         playersDataPanel.setBounds(10, 10, 984, 135);
-        frame.getContentPane().add(playersDataPanel);
+        getContentPane().add(playersDataPanel);
         playersDataPanel.setLayout(new GridLayout(6, 10, 10, 0));
+        
+        JLabel lblDealerPlayer0 = new JLabel("");
+        lblDealerPlayer0.setFont(new Font("Cambria Math", Font.BOLD, 16));
+        lblDealerPlayer0.setForeground(new Color(204, 51, 51));
+        lblDealerPlayer0.setHorizontalAlignment(SwingConstants.CENTER);
+        mapLblDealer.put("Player0", lblDealerPlayer0);
+        playersDataPanel.add(lblDealerPlayer0);
         
         JLabel lblDealerPlayer1 = new JLabel("");
         lblDealerPlayer1.setFont(new Font("Cambria Math", Font.BOLD, 16));
@@ -145,12 +136,14 @@ public class ClientWindow {
         mapLblDealer.put("Player9", lblDealerPlayer9);
         playersDataPanel.add(lblDealerPlayer9);
         
-        JLabel lblDealerPlayer10 = new JLabel("");
-        lblDealerPlayer10.setFont(new Font("Cambria Math", Font.BOLD, 16));
-        lblDealerPlayer10.setForeground(new Color(204, 51, 51));
-        lblDealerPlayer10.setHorizontalAlignment(SwingConstants.CENTER);
-        mapLblDealer.put("Player10", lblDealerPlayer10);
-        playersDataPanel.add(lblDealerPlayer10);
+        JLabel lblNamePlayer0 = new JLabel("");
+        lblNamePlayer0.setVerticalAlignment(SwingConstants.BOTTOM);
+        lblNamePlayer0.setForeground(new Color(255, 255, 204));
+        lblNamePlayer0.setFont(new Font("Cambria Math", Font.BOLD, 18));
+        lblNamePlayer0.setBackground(new Color(102, 153, 102));
+        lblNamePlayer0.setHorizontalAlignment(SwingConstants.CENTER);
+        mapLblName.put("Player0", lblNamePlayer0);
+        playersDataPanel.add(lblNamePlayer0);
         
         JLabel lblNamePlayer1 = new JLabel("");
         lblNamePlayer1.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -178,7 +171,7 @@ public class ClientWindow {
         lblNamePlayer3.setHorizontalAlignment(SwingConstants.CENTER);
         mapLblName.put("Player3", lblNamePlayer3);
         playersDataPanel.add(lblNamePlayer3);
-        
+
         JLabel lblNamePlayer4 = new JLabel("");
         lblNamePlayer4.setVerticalAlignment(SwingConstants.BOTTOM);
         lblNamePlayer4.setForeground(new Color(255, 255, 204));
@@ -187,7 +180,7 @@ public class ClientWindow {
         lblNamePlayer4.setHorizontalAlignment(SwingConstants.CENTER);
         mapLblName.put("Player4", lblNamePlayer4);
         playersDataPanel.add(lblNamePlayer4);
-
+        
         JLabel lblNamePlayer5 = new JLabel("");
         lblNamePlayer5.setVerticalAlignment(SwingConstants.BOTTOM);
         lblNamePlayer5.setForeground(new Color(255, 255, 204));
@@ -233,14 +226,14 @@ public class ClientWindow {
         mapLblName.put("Player9", lblNamePlayer9);
         playersDataPanel.add(lblNamePlayer9);
         
-        JLabel lblNamePlayer10 = new JLabel("");
-        lblNamePlayer10.setVerticalAlignment(SwingConstants.BOTTOM);
-        lblNamePlayer10.setForeground(new Color(255, 255, 204));
-        lblNamePlayer10.setFont(new Font("Cambria Math", Font.BOLD, 18));
-        lblNamePlayer10.setBackground(new Color(102, 153, 102));
-        lblNamePlayer10.setHorizontalAlignment(SwingConstants.CENTER);
-        mapLblName.put("Player10", lblNamePlayer10);
-        playersDataPanel.add(lblNamePlayer10);
+        JLabel lblMoneyPlayer0 = new JLabel("");
+        lblMoneyPlayer0.setVerticalAlignment(SwingConstants.TOP);
+        lblMoneyPlayer0.setHorizontalAlignment(SwingConstants.CENTER);
+        lblMoneyPlayer0.setForeground(new Color(255, 255, 204));
+        lblMoneyPlayer0.setFont(new Font("Cambria Math", Font.BOLD, 18));
+        lblMoneyPlayer0.setBackground(new Color(102, 153, 102));
+        mapLblMoney.put("Player0", lblMoneyPlayer0);
+        playersDataPanel.add(lblMoneyPlayer0);
         
         JLabel lblMoneyPlayer1 = new JLabel("");
         lblMoneyPlayer1.setVerticalAlignment(SwingConstants.TOP);
@@ -323,14 +316,13 @@ public class ClientWindow {
         mapLblMoney.put("Player9", lblMoneyPlayer9);
         playersDataPanel.add(lblMoneyPlayer9);
         
-        JLabel lblMoneyPlayer10 = new JLabel("");
-        lblMoneyPlayer10.setVerticalAlignment(SwingConstants.TOP);
-        lblMoneyPlayer10.setHorizontalAlignment(SwingConstants.CENTER);
-        lblMoneyPlayer10.setForeground(new Color(255, 255, 204));
-        lblMoneyPlayer10.setFont(new Font("Cambria Math", Font.BOLD, 18));
-        lblMoneyPlayer10.setBackground(new Color(102, 153, 102));
-        mapLblMoney.put("Player10", lblMoneyPlayer10);
-        playersDataPanel.add(lblMoneyPlayer10);
+        JLabel lblActionPlayer0 = new JLabel("");
+        lblActionPlayer0.setVerticalAlignment(SwingConstants.BOTTOM);
+        lblActionPlayer0.setForeground(new Color(255, 255, 153));
+        lblActionPlayer0.setFont(new Font("Cambria Math", Font.PLAIN, 15));
+        lblActionPlayer0.setHorizontalAlignment(SwingConstants.CENTER);
+        mapLblAction.put("Player0", lblActionPlayer0);
+        playersDataPanel.add(lblActionPlayer0);
         
         JLabel lblActionPlayer1 = new JLabel("");
         lblActionPlayer1.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -404,13 +396,13 @@ public class ClientWindow {
         mapLblAction.put("Player9", lblActionPlayer9);
         playersDataPanel.add(lblActionPlayer9);
         
-        JLabel lblActionPlayer10 = new JLabel("");
-        lblActionPlayer10.setVerticalAlignment(SwingConstants.BOTTOM);
-        lblActionPlayer10.setForeground(new Color(255, 255, 153));
-        lblActionPlayer10.setFont(new Font("Cambria Math", Font.PLAIN, 15));
-        lblActionPlayer10.setHorizontalAlignment(SwingConstants.CENTER);
-        mapLblAction.put("Player10", lblActionPlayer10);
-        playersDataPanel.add(lblActionPlayer10);
+        JLabel lblBetPlayer0 = new JLabel("");
+        lblBetPlayer0.setVerticalAlignment(SwingConstants.TOP);
+        lblBetPlayer0.setFont(new Font("Cambria Math", Font.PLAIN, 15));
+        lblBetPlayer0.setForeground(new Color(255, 255, 153));
+        lblBetPlayer0.setHorizontalAlignment(SwingConstants.CENTER);
+        mapLblBet.put("Player0", lblBetPlayer0);
+        playersDataPanel.add(lblBetPlayer0);
         
         JLabel lblBetPlayer1 = new JLabel("");
         lblBetPlayer1.setVerticalAlignment(SwingConstants.TOP);
@@ -449,7 +441,6 @@ public class ClientWindow {
         lblBetPlayer5.setFont(new Font("Cambria Math", Font.PLAIN, 15));
         lblBetPlayer5.setForeground(new Color(255, 255, 153));
         lblBetPlayer5.setHorizontalAlignment(SwingConstants.CENTER);
-        mapLblBet.put("Player5", lblBetPlayer5);
         playersDataPanel.add(lblBetPlayer5);
         
         JLabel lblBetPlayer6 = new JLabel("");
@@ -457,6 +448,7 @@ public class ClientWindow {
         lblBetPlayer6.setFont(new Font("Cambria Math", Font.PLAIN, 15));
         lblBetPlayer6.setForeground(new Color(255, 255, 153));
         lblBetPlayer6.setHorizontalAlignment(SwingConstants.CENTER);
+        mapLblBet.put("Player6", lblBetPlayer6);
         playersDataPanel.add(lblBetPlayer6);
         
         JLabel lblBetPlayer7 = new JLabel("");
@@ -483,13 +475,22 @@ public class ClientWindow {
         mapLblBet.put("Player9", lblBetPlayer9);
         playersDataPanel.add(lblBetPlayer9);
         
-        JLabel lblBetPlayer10 = new JLabel("");
-        lblBetPlayer10.setVerticalAlignment(SwingConstants.TOP);
-        lblBetPlayer10.setFont(new Font("Cambria Math", Font.PLAIN, 15));
-        lblBetPlayer10.setForeground(new Color(255, 255, 153));
-        lblBetPlayer10.setHorizontalAlignment(SwingConstants.CENTER);
-        mapLblBet.put("Player10", lblBetPlayer10);
-        playersDataPanel.add(lblBetPlayer10);
+        JPanel cardsPlayer0 = new JPanel();
+        cardsPlayer0.setBackground(new Color(35, 70, 35));
+        playersDataPanel.add(cardsPlayer0);
+        cardsPlayer0.setLayout(new GridLayout(0, 2, 0, 0));
+        
+        JLabel lblCard1Player0 = new JLabel("");
+        lblCard1Player0.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard1Player0.setHorizontalAlignment(SwingConstants.CENTER);
+        mapLblCardPlayer.put("Card1Player0", lblCard1Player0);
+        cardsPlayer0.add(lblCard1Player0);
+        
+        JLabel lblCard2Player0 = new JLabel("");
+        lblCard2Player0.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard2Player0.setHorizontalAlignment(SwingConstants.CENTER);
+        mapLblCardPlayer.put("Card2Player0", lblCard2Player0);
+        cardsPlayer0.add(lblCard2Player0);
         
         JPanel cardsPlayer1 = new JPanel();
         cardsPlayer1.setBackground(new Color(35, 70, 35));
@@ -644,29 +645,12 @@ public class ClientWindow {
         mapLblCardPlayer.put("Card2Player9", lblCard2Player9);
         cardsPlayer9.add(lblCard2Player9);
         
-        JPanel cardsPlayer10 = new JPanel();
-        cardsPlayer10.setBackground(new Color(35, 70, 35));
-        playersDataPanel.add(cardsPlayer10);
-        cardsPlayer10.setLayout(new GridLayout(0, 2, 0, 0));
-        
-        JLabel lblCard1Player10 = new JLabel("");
-        lblCard1Player10.setFont(new Font("Cambria Math", Font.BOLD, 20));
-        lblCard1Player10.setHorizontalAlignment(SwingConstants.CENTER);
-        mapLblCardPlayer.put("Card1Player10", lblCard1Player10);
-        cardsPlayer10.add(lblCard1Player10);
-        
-        JLabel lblCard2Player10 = new JLabel("");
-        lblCard2Player10.setFont(new Font("Cambria Math", Font.BOLD, 20));
-        lblCard2Player10.setHorizontalAlignment(SwingConstants.CENTER);
-        mapLblCardPlayer.put("Card2Player10", lblCard2Player10);
-        cardsPlayer10.add(lblCard2Player10);
-        
         JPanel infoPanel = new JPanel();
         infoPanel.setBackground(new Color(35, 70, 35));
         infoPanel.setBounds(10, 200, 984, 50);
-        frame.getContentPane().add(infoPanel);
+        getContentPane().add(infoPanel);
         
-        JLabel lblInfo = new JLabel("");
+        lblInfo = new JLabel("");
         lblInfo.setForeground(new Color(180, 255, 180));
         lblInfo.setFont(new Font("Cambria Math", Font.PLAIN, 22));
         lblInfo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -675,7 +659,7 @@ public class ClientWindow {
         JPanel potValuePanel = new JPanel();
         potValuePanel.setBackground(new Color(35, 70, 35));
         potValuePanel.setBounds(10, 260, 984, 50);
-        frame.getContentPane().add(potValuePanel);
+        getContentPane().add(potValuePanel);
         potValuePanel.setLayout(new GridLayout(0, 2, 0, 0));
         
         JLabel lblPotText = new JLabel("Pot: $");
@@ -684,7 +668,7 @@ public class ClientWindow {
         lblPotText.setHorizontalAlignment(SwingConstants.RIGHT);
         potValuePanel.add(lblPotText);
         
-        JLabel lblPotValue = new JLabel("0");
+        lblPotValue = new JLabel("0");
         lblPotValue.setHorizontalAlignment(SwingConstants.LEFT);
         lblPotValue.setForeground(new Color(153, 255, 51));
         lblPotValue.setFont(new Font("Cambria Math", Font.PLAIN, 35));
@@ -693,7 +677,7 @@ public class ClientWindow {
         JPanel communityCardsPanel = new JPanel();
         communityCardsPanel.setBackground(new Color(35, 70, 35));
         communityCardsPanel.setBounds(107, 320, 790, 200);
-        frame.getContentPane().add(communityCardsPanel);
+        getContentPane().add(communityCardsPanel);
         communityCardsPanel.setLayout(new GridLayout(0, 5, 10, 0));
         
         JLabel lblFlopCard1 = new JLabel("");
@@ -744,7 +728,7 @@ public class ClientWindow {
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setBackground(new Color(30, 70, 30));
         buttonsPanel.setBounds(10, 650, 700, 60);
-        frame.getContentPane().add(buttonsPanel);
+        getContentPane().add(buttonsPanel);
         buttonsPanel.setLayout(new GridLayout(0, 6, 20, 0));
         
         JButton btnCheck = new JButton("Check");
@@ -819,7 +803,7 @@ public class ClientWindow {
         lblBetRaiseDollar.setFont(new Font("Cambria Math", Font.PLAIN, 28));
         lblBetRaiseDollar.setHorizontalAlignment(SwingConstants.CENTER);
         lblBetRaiseDollar.setBounds(130, 589, 34, 50);
-        frame.getContentPane().add(lblBetRaiseDollar);
+        getContentPane().add(lblBetRaiseDollar);
         
         JSpinner spinnerBetRaise = new JSpinner();
         spinnerBetRaise.setVerifyInputWhenFocusTarget(false);
@@ -838,12 +822,12 @@ public class ClientWindow {
         spinnerBetRaise.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(5)));
         spinnerBetRaise.setFont(new Font("Cambria Math", Font.PLAIN, 28));
         spinnerBetRaise.setBounds(161, 589, 189, 50);
-        frame.getContentPane().add(spinnerBetRaise);
+        getContentPane().add(spinnerBetRaise);
         
         JPanel playerCardsPanel = new JPanel();
         playerCardsPanel.setBackground(new Color(35, 70, 35));
         playerCardsPanel.setBounds(740, 570, 250, 150);
-        frame.getContentPane().add(playerCardsPanel);
+        getContentPane().add(playerCardsPanel);
         playerCardsPanel.setLayout(new GridLayout(0, 2, 10, 0));
         
         lblCard1 = new JLabel("");
@@ -866,13 +850,21 @@ public class ClientWindow {
         
     }
 
-    private String getBid() {
+    public String getBid() {
         String bid = spinnerTextField.getText();
         spinnerTextField.setText(null);
         return bid;
     }
     
-    private void setDealer(String playerAndIndex) {
+    public void setLblInfoText(String text) {
+        lblInfo.setText(text);
+    }
+    
+    public void setLblPotValue(String text) {
+        lblPotValue.setText(text);
+    }
+    
+    public void setDealer(String playerAndIndex) {
         JLabel label = mapLblDealer.get(playerAndIndex);
         for(JLabel lbl : mapLblDealer.values()) {
             if(lbl != label) {
@@ -884,27 +876,40 @@ public class ClientWindow {
         }
     }
     
-    private void setName(String playerAndIndex, String name) {
+    public void setActor(String playerAndIndex) {
+        JLabel label = mapLblName.get(playerAndIndex);
+        for(JLabel lbl : mapLblName.values()) {
+            if(lbl != label) {
+                lbl.setForeground(new Color(255, 255, 204));
+            }
+            else {
+                lbl.setForeground(new Color(204, 51, 51));
+            }
+        }
+    }
+    
+    public void setName(String playerAndIndex, String name) {
         JLabel label = mapLblName.get(playerAndIndex);
         label.setText(name);
     }
     
-    private void setMoney(String playerAndIndex, String money) {
+    public void setMoney(String playerAndIndex, String money) {
         JLabel label = mapLblMoney.get(playerAndIndex);
         label.setText("$" + money);
     }
     
-    private void setAction(String playerAndIndex, String lastAction) {
+    public void setAction(String playerAndIndex, String lastAction) {
         JLabel label = mapLblAction.get(playerAndIndex);
         label.setText(lastAction);
     }
     
-    private void setBet(String playerAndIndex, int bet){
+    public void setBet(String playerAndIndex, String bet){
         JLabel label = mapLblBet.get(playerAndIndex);
         label.setText("$" + bet);
     }
     
-    private void setCardPlayer(String cardAndIndexPlayerAndIndex, String rankSuit) {
+    // cardAndIndexPlayerAndIndex is string like "Card1Player2" or "Card2Player9"
+    public void setCardPlayer(String cardAndIndexPlayerAndIndex, String rankSuit) {
         // ♠♣♥♦
         JLabel label = mapLblCardPlayer.get(cardAndIndexPlayerAndIndex);
         label.setText(rankSuit);
@@ -916,7 +921,7 @@ public class ClientWindow {
         }
     }
     
-    private void setCardCommunity(String cardAndIndexDealName, String rankSuit) {
+    public void setCardCommunity(String cardAndIndexDealName, String rankSuit) {
         // ♠♣♥♦
         JLabel label = mapLblCardCommunity.get(cardAndIndexDealName);
         label.setText(rankSuit);
@@ -934,7 +939,7 @@ public class ClientWindow {
         }
     }
     
-    private void setCards(String card1RankSuit, String card2RankSuit) {
+    public void setCards(String card1RankSuit, String card2RankSuit) {
         if(card1RankSuit.endsWith("♦") || card1RankSuit.endsWith("♥")) {
             lblCard1.setForeground(new Color(180, 20, 20));
         }
@@ -949,5 +954,95 @@ public class ClientWindow {
         }
         lblCard1.setText(card1RankSuit);
         lblCard2.setText(card2RankSuit);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /**
+     * @return the mapLblDealer
+     */
+    public Map<String, JLabel> getMapLblDealer() {
+        return mapLblDealer;
+    }
+
+    /**
+     * @return the mapLblName
+     */
+    public Map<String, JLabel> getMapLblName() {
+        return mapLblName;
+    }
+
+    /**
+     * @return the mapLblMoney
+     */
+    public Map<String, JLabel> getMapLblMoney() {
+        return mapLblMoney;
+    }
+
+    /**
+     * @return the mapLblAction
+     */
+    public Map<String, JLabel> getMapLblAction() {
+        return mapLblAction;
+    }
+
+    /**
+     * @return the mapLblBet
+     */
+    public Map<String, JLabel> getMapLblBet() {
+        return mapLblBet;
+    }
+
+    /**
+     * @return the mapLblCardPlayer
+     */
+    public Map<String, JLabel> getMapLblCardPlayer() {
+        return mapLblCardPlayer;
+    }
+
+    /**
+     * @return the mapLblCardCommunity
+     */
+    public Map<String, JLabel> getMapLblCardCommunity() {
+        return mapLblCardCommunity;
+    }
+
+    /**
+     * @return the spinnerTextField
+     */
+    public JFormattedTextField getSpinnerTextField() {
+        return spinnerTextField;
+    }
+
+    /**
+     * @return the lblCard1
+     */
+    public JLabel getLblCard1() {
+        return lblCard1;
+    }
+
+    /**
+     * @return the lblCard2
+     */
+    public JLabel getLblCard2() {
+        return lblCard2;
+    }
+
+    /**
+     * @return the lblInfo
+     */
+    public JLabel getLblInfo() {
+        return lblInfo;
+    }
+
+    /**
+     * @return the lblPotValue
+     */
+    public JLabel getLblPotValue() {
+        return lblPotValue;
     }
 }
