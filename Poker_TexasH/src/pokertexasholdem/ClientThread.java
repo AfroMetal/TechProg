@@ -166,7 +166,7 @@ public class ClientThread implements Runnable {
                 // parts[0] = "Card#" parts[1] = <rank><suit>
                 String[] parts = message.substring(14).split(" ");
                 clientWindow.setCardCommunity(parts[0], parts[1]);
-                clientWindow.setLblInfoText("Dealer draw " + parts[1]);
+                clientWindow.setLblInfoText("Dealer draw card");
             }
             
             if (message.startsWith("YOURCARDS")) {

@@ -171,6 +171,8 @@ public class Table {
             }
             
             if (activePlayersNum > 1) {
+                informAllPlayers("INFO Round will start shortly");
+                pause(sleeptime*3);
                 playRound();
                 System.out.println("[RUN] Called method playRound()");
             } else {
@@ -179,6 +181,7 @@ public class Table {
             }
         }
         
+        informAllPlayers("INFO [GAME OVER] Congratulation to the winner!");
         // No more players to play. Game over.
         // TODO: implement whatever happens now
     }
@@ -187,6 +190,8 @@ public class Table {
      * Single round ended with showdown
      */
     private void playRound() {
+        boolean continueRound;
+        
         resetRound();
         System.out.println("[ROUND] Reset done - new round");
         
@@ -202,36 +207,42 @@ public class Table {
         System.out.println("[ROUND] Cards dealt");
         
         // do first betting round
-        betting();
+        continueRound = betting();
         System.out.println("[ROUND] 1st betting ended");
         
-        // FLOP, deal 3 cards to board
-        dealCommunityCards(3);
-        System.out.println("[ROUND] Flop dealt");
-        
-        betting();
-        System.out.println("[ROUND] 2nd betting ended");
-        
-        // TURN, deal one card to board
-        dealCommunityCards(1);
-        System.out.println("[ROUND] Turn dealt");
-        
-        // do second betting
-        betting();
-        System.out.println("[ROUND] 3rd betting ended");
-        
-        // RIVER, deal one card to board
-        dealCommunityCards(1);
-        System.out.println("[ROUND] River dealt");
-        
-        // do third, last betting
-        betting();
-        System.out.println("[ROUND] 4th betting ended");
-        
-        // SHOWDOWN, evaluate players
-        showdown();
-        System.out.println("[ROUND] Showdown ended");
-        
+        if(continueRound) {
+            // FLOP, deal 3 cards to board
+            dealCommunityCards(3);
+            System.out.println("[ROUND] Flop dealt");
+            
+            continueRound = betting();
+            System.out.println("[ROUND] 2nd betting ended");
+            
+            if(continueRound) {
+                // TURN, deal one card to board
+                dealCommunityCards(1);
+                System.out.println("[ROUND] Turn dealt");
+                
+                // do second betting
+                continueRound = betting();
+                System.out.println("[ROUND] 3rd betting ended");
+                
+                if(continueRound) {
+                    // RIVER, deal one card to board
+                    dealCommunityCards(1);
+                    System.out.println("[ROUND] River dealt");
+                    
+                    // do third, last betting
+                    continueRound = betting();
+                    System.out.println("[ROUND] 4th betting ended");
+                    if(continueRound) {
+                        // SHOWDOWN, evaluate players
+                        showdown();
+                        System.out.println("[ROUND] Showdown ended");
+                    }
+                }
+            }
+        }
     }
     
     /**
@@ -311,8 +322,9 @@ public class Table {
     /**
      * Does the betting
      */
-    private void betting() {
+    private boolean betting() {
         int playersToBet = activePlayersNum;
+        boolean continueRound = true;
         
         // if it's not the first betting, reset bet and set actor to next to
         // dealer
@@ -351,9 +363,10 @@ public class Table {
                     int allInAmount = actor.getMoney();
                     bet += allInAmount;
                     minBet = allInAmount;
+                    int toAllIn = (bet - actor.getBet());
                     actor.setBet(bet);
-                    actor.pay(allInAmount);
-                    contributePot(allInAmount);
+                    actor.pay(toAllIn);
+                    contributePot(toAllIn);
                 } else if (action == Action.CALL) {
                     int toSettleBet = (bet - actor.getBet());
                     if(toSettleBet == actor.getMoney()) {
@@ -384,6 +397,7 @@ public class Table {
                     playersToBet = activePlayersNum;
                 } else if (action == Action.FOLD) {
                     actor.setHand(null);
+                    actor.setLastAction(action);
                     activePlayers.remove(actor);
                     activePlayersNum = activePlayers.size();
                     actorPosition--;
@@ -394,27 +408,53 @@ public class Table {
                         int winAmount = getTotalPot();
                         winner.win(winAmount);
                         playersToBet = 0;
+                        
+                        // inform about actors action
+                        String message = "ACTION " + "Player" + playersList.indexOf(actor) + " FOLD";
+                        informAllPlayers(message);
+                        // inform about players bet amount
+                        message = "BET " + "Player" + playersList.indexOf(actor) + " $" + actor.getBet();
+                        informAllPlayers(message);
+                        // update players money
+                        message = "MONEY Player" + playersList.indexOf(actor) + " " + actor.getMoney();
+                        informAllPlayers(message);
+                        // display info about play
+                        message = "INFO " + actor.getName() + " " + actor.getLastAction().toString();
+                        informAllPlayers(message);
+                        pause(sleeptime);
+                        
+                        message = "INFO " + winner.getName() + " wins $" + winAmount;
+                        informAllPlayers(message);
+                        
+                        message = "MONEY Player" + playersList.indexOf(winner) + " " + winner.getMoney();
+                        informAllPlayers(message);
+                        
+                        informAllPlayers("POT " + getTotalPot());
+                        
+                        pause(sleeptime * 2);
+                        
+                        continueRound = true;
                     }
                 }
             }
             actor.setLastAction(action);
-            // if (playersToBet > 0) {
-            // inform about actors action
-            String message = "ACTION " + "Player" + playersList.indexOf(actor) + " " + actor.getLastAction().getName();
-            informAllPlayers(message);
-            // inform about players bet amount
-            message = "BET " + "Player" + playersList.indexOf(actor) + " $" + actor.getBet();
-            informAllPlayers(message);
-            // update players money
-            message = "MONEY Player" + playersList.indexOf(actor) + " " + actor.getMoney();
-            informAllPlayers(message);
-            // display info about play
-            message = "INFO " + actor.getName() + " " + actor.getLastAction().toString();
-            informAllPlayers(message);
-            // update pot value
-            message = "POT " + getTotalPot();
-            informAllPlayers(message);
-            // }
+            if (playersToBet > 0) {
+                // inform about actors action
+                String message = "ACTION " + "Player" + playersList.indexOf(actor) + " " + actor.getLastAction().getName();
+                informAllPlayers(message);
+                // inform about players bet amount
+                message = "BET " + "Player" + playersList.indexOf(actor) + " $" + actor.getBet();
+                informAllPlayers(message);
+                // update players money
+                message = "MONEY Player" + playersList.indexOf(actor) + " " + actor.getMoney();
+                informAllPlayers(message);
+                // display info about play
+                message = "INFO " + actor.getName() + " " + actor.getLastAction().toString();
+                informAllPlayers(message);
+                // update pot value
+                message = "POT " + getTotalPot();
+                informAllPlayers(message);
+            }
         }
         
         // reset bets
@@ -424,6 +464,7 @@ public class Table {
         }
         informAllPlayers("RESETBETS");
         
+        return continueRound;
     }
     
     /**
@@ -628,6 +669,7 @@ public class Table {
             winner.win(potWinning);
             informAllPlayers("INFO " + winner.getName() + " wins $" + potWinning);
             informAllPlayers("MONEY Player" + playersList.indexOf(winner) + " " + winner.getMoney());
+            informAllPlayers("POT " + getTotalPot());
             pause(sleeptime * 2);
         }
     }

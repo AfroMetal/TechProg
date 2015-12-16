@@ -484,14 +484,18 @@ public class ClientWindow extends JFrame implements ActionListener {
         cardsPlayer0.setLayout(new GridLayout(0, 2, 0, 0));
         
         JLabel lblCard1Player0 = new JLabel("");
-        lblCard1Player0.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard1Player0.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard1Player0.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard1Player0.setBackground(new Color(255, 255, 255));
+        lblCard1Player0.setOpaque(false);
         mapLblCardPlayer.put("Card1Player0", lblCard1Player0);
         cardsPlayer0.add(lblCard1Player0);
         
         JLabel lblCard2Player0 = new JLabel("");
-        lblCard2Player0.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard2Player0.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard2Player0.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard2Player0.setBackground(new Color(255, 255, 255));
+        lblCard2Player0.setOpaque(false);
         mapLblCardPlayer.put("Card2Player0", lblCard2Player0);
         cardsPlayer0.add(lblCard2Player0);
         
@@ -501,14 +505,18 @@ public class ClientWindow extends JFrame implements ActionListener {
         cardsPlayer1.setLayout(new GridLayout(0, 2, 0, 0));
         
         JLabel lblCard1Player1 = new JLabel("");
-        lblCard1Player1.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard1Player1.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard1Player1.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard1Player1.setBackground(new Color(255, 255, 255));
+        lblCard1Player1.setOpaque(false);
         mapLblCardPlayer.put("Card1Player1", lblCard1Player1);
         cardsPlayer1.add(lblCard1Player1);
         
         JLabel lblCard2Player1 = new JLabel("");
-        lblCard2Player1.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard2Player1.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard2Player1.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard2Player1.setBackground(new Color(255, 255, 255));
+        lblCard2Player1.setOpaque(false);
         mapLblCardPlayer.put("Card2Player1", lblCard2Player1);
         cardsPlayer1.add(lblCard2Player1);
         
@@ -518,14 +526,18 @@ public class ClientWindow extends JFrame implements ActionListener {
         cardsPlayer2.setLayout(new GridLayout(0, 2, 0, 0));
         
         JLabel lblCard1Player2 = new JLabel("");
-        lblCard1Player2.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard1Player2.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard1Player2.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard1Player2.setBackground(new Color(255, 255, 255));
+        lblCard1Player2.setOpaque(false);
         mapLblCardPlayer.put("Card1Player2", lblCard1Player2);
         cardsPlayer2.add(lblCard1Player2);
         
         JLabel lblCard2Player2 = new JLabel("");
-        lblCard2Player2.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard2Player2.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard2Player2.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard2Player2.setBackground(new Color(255, 255, 255));
+        lblCard2Player2.setOpaque(false);
         mapLblCardPlayer.put("Card2Player2", lblCard2Player2);
         cardsPlayer2.add(lblCard2Player2);
         
@@ -535,14 +547,18 @@ public class ClientWindow extends JFrame implements ActionListener {
         cardsPlayer3.setLayout(new GridLayout(0, 2, 0, 0));
         
         JLabel lblCard1Player3 = new JLabel("");
-        lblCard1Player3.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard1Player3.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard1Player3.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard1Player3.setBackground(new Color(255, 255, 255));
+        lblCard1Player3.setOpaque(false);
         mapLblCardPlayer.put("Card1Player3", lblCard1Player3);
         cardsPlayer3.add(lblCard1Player3);
         
         JLabel lblCard2Player3 = new JLabel("");
-        lblCard2Player3.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard2Player3.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard2Player3.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard2Player3.setBackground(new Color(255, 255, 255));
+        lblCard2Player3.setOpaque(false);
         mapLblCardPlayer.put("Card2Player3", lblCard2Player3);
         cardsPlayer3.add(lblCard2Player3);
         
@@ -552,14 +568,18 @@ public class ClientWindow extends JFrame implements ActionListener {
         cardsPlayer4.setLayout(new GridLayout(0, 2, 0, 0));
         
         JLabel lblCard1Player4 = new JLabel("");
-        lblCard1Player4.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard1Player4.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard1Player4.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard1Player4.setBackground(new Color(255, 255, 255));
+        lblCard1Player4.setOpaque(false);
         mapLblCardPlayer.put("Card1Player4", lblCard1Player4);
         cardsPlayer4.add(lblCard1Player4);
         
         JLabel lblCard2Player4 = new JLabel("");
-        lblCard2Player4.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard2Player4.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard2Player4.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard2Player4.setBackground(new Color(255, 255, 255));
+        lblCard2Player4.setOpaque(false);
         mapLblCardPlayer.put("Card2Player4", lblCard2Player4);
         cardsPlayer4.add(lblCard2Player4);
         
@@ -569,14 +589,18 @@ public class ClientWindow extends JFrame implements ActionListener {
         cardsPlayer5.setLayout(new GridLayout(0, 2, 0, 0));
         
         JLabel lblCard1Player5 = new JLabel("");
-        lblCard1Player5.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard1Player5.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard1Player5.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard1Player5.setBackground(new Color(255, 255, 255));
+        lblCard1Player5.setOpaque(false);
         mapLblCardPlayer.put("Card1Player5", lblCard1Player5);
         cardsPlayer5.add(lblCard1Player5);
         
         JLabel lblCard2Player5 = new JLabel("");
-        lblCard2Player5.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard2Player5.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard2Player5.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard2Player5.setBackground(new Color(255, 255, 255));
+        lblCard2Player5.setOpaque(false);
         mapLblCardPlayer.put("Card2Player5", lblCard2Player5);
         cardsPlayer5.add(lblCard2Player5);
         
@@ -586,14 +610,18 @@ public class ClientWindow extends JFrame implements ActionListener {
         cardsPlayer6.setLayout(new GridLayout(0, 2, 0, 0));
         
         JLabel lblCard1Player6 = new JLabel("");
-        lblCard1Player6.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard1Player6.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard1Player6.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard1Player6.setBackground(new Color(255, 255, 255));
+        lblCard1Player6.setOpaque(false);
         mapLblCardPlayer.put("Card1Player6", lblCard1Player6);
         cardsPlayer6.add(lblCard1Player6);
         
         JLabel lblCard2Player6 = new JLabel("");
-        lblCard2Player6.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard2Player6.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard2Player6.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard2Player6.setBackground(new Color(255, 255, 255));
+        lblCard2Player6.setOpaque(false);
         mapLblCardPlayer.put("Card2Player6", lblCard2Player6);
         cardsPlayer6.add(lblCard2Player6);
         
@@ -603,14 +631,18 @@ public class ClientWindow extends JFrame implements ActionListener {
         cardsPlayer7.setLayout(new GridLayout(0, 2, 0, 0));
         
         JLabel lblCard1Player7 = new JLabel("");
-        lblCard1Player7.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard1Player7.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard1Player7.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard1Player7.setBackground(new Color(255, 255, 255));
+        lblCard1Player7.setOpaque(false);
         mapLblCardPlayer.put("Card1Player7", lblCard1Player7);
         cardsPlayer7.add(lblCard1Player7);
         
         JLabel lblCard2Player7 = new JLabel("");
-        lblCard2Player7.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard2Player7.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard2Player7.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard2Player7.setBackground(new Color(255, 255, 255));
+        lblCard2Player7.setOpaque(false);
         mapLblCardPlayer.put("Card2Player7", lblCard2Player7);
         cardsPlayer7.add(lblCard2Player7);
         
@@ -620,14 +652,18 @@ public class ClientWindow extends JFrame implements ActionListener {
         cardsPlayer8.setLayout(new GridLayout(0, 2, 0, 0));
         
         JLabel lblCard1Player8 = new JLabel("");
-        lblCard1Player8.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard1Player8.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard1Player8.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard1Player8.setBackground(new Color(255, 255, 255));
+        lblCard1Player8.setOpaque(false);
         mapLblCardPlayer.put("Card1Player8", lblCard1Player8);
         cardsPlayer8.add(lblCard1Player8);
         
         JLabel lblCard2Player8 = new JLabel("");
-        lblCard2Player8.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard2Player8.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard2Player8.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard2Player8.setBackground(new Color(255, 255, 255));
+        lblCard2Player8.setOpaque(false);
         mapLblCardPlayer.put("Card2Player8", lblCard2Player8);
         cardsPlayer8.add(lblCard2Player8);
         
@@ -637,14 +673,18 @@ public class ClientWindow extends JFrame implements ActionListener {
         cardsPlayer9.setLayout(new GridLayout(0, 2, 0, 0));
         
         JLabel lblCard1Player9 = new JLabel("");
-        lblCard1Player9.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard1Player9.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard1Player9.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard1Player9.setBackground(new Color(255, 255, 255));
+        lblCard1Player9.setOpaque(false);
         mapLblCardPlayer.put("Card1Player9", lblCard1Player9);
         cardsPlayer9.add(lblCard1Player9);
         
         JLabel lblCard2Player9 = new JLabel("");
-        lblCard2Player9.setFont(new Font("Cambria Math", Font.BOLD, 20));
+        lblCard2Player9.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblCard2Player9.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCard2Player9.setBackground(new Color(255, 255, 255));
+        lblCard2Player9.setOpaque(false);
         mapLblCardPlayer.put("Card2Player9", lblCard2Player9);
         cardsPlayer9.add(lblCard2Player9);
         
@@ -913,6 +953,11 @@ public class ClientWindow extends JFrame implements ActionListener {
             label.setForeground(new Color(180, 20, 20));
         } else {
             label.setForeground(new Color(20, 20, 20));
+        }
+        if (rankSuit != "") {
+            label.setOpaque(true);
+        } else {
+            label.setOpaque(false);
         }
     }
     
