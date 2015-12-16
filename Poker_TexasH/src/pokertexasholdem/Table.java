@@ -129,25 +129,27 @@ public class Table {
     /**
      * Send message to concrete player
      */
-    private void informPlayer(String message, Player player, boolean waitForReply) {
+    private String informPlayer(String message, Player player, boolean waitForReply) {
         PrintWriter out = null;
+        BufferedReader in = null;
         try {
             out = new PrintWriter(player.getSocket().getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(player.getSocket().getInputStream()));
             System.out.println("[TABLE] Informing " + player.getName() + ": " + message);
             out.println(message);
             
             if (waitForReply) {
-                getPlayerReply(player.getSocket());
+                System.out.println("[TABLE] Waiting for response...");
+                String response = in.readLine();
+                System.out.println("[TABLE] Got answer: " + response);
+                return response;
             }
         } catch (IOException e) {
             System.out.println("[TABLE] Inform player I/O Exception");
         } catch (NullPointerException e) {
             ; // TODO player disconected
         }
-    }
-    
-    private void getPlayerReply(Socket socket) {
-        // TODO implement
+        return null;
     }
     
     /**
@@ -193,7 +195,6 @@ public class Table {
         nextActor(actor);
         
         postBigBlind();
-        nextActor(actor);
         System.out.println("[ROUND] Blinds posted");
         
         // deal cards to active players
@@ -268,6 +269,11 @@ public class Table {
     private void postSmallBlind() {
         actor.smallBlind(smallBlind);
         contributePot(smallBlind);
+        informAllPlayers("MONEY Player" + playersList.indexOf(actor) + " " + actor.getMoney());
+        informAllPlayers("POT " + getTotalPot());
+        informAllPlayers("ACTION Player" + playersList.indexOf(actor) + " SmallBlind");
+        informAllPlayers("BET Player" + playersList.indexOf(actor) + " $" + smallBlind);
+        informAllPlayers("INFO " + actor.getName() + " posts small blind of " + smallBlind);
         pause(sleeptime);
     }
     
@@ -277,6 +283,11 @@ public class Table {
     private void postBigBlind() {
         actor.bigBlind(bigBlind);
         contributePot(bigBlind);
+        informAllPlayers("MONEY Player" + playersList.indexOf(actor) + " " + actor.getMoney());
+        informAllPlayers("POT " + getTotalPot());
+        informAllPlayers("ACTION Player" + playersList.indexOf(actor) + " BigBlind");
+        informAllPlayers("BET Player" + playersList.indexOf(actor) + " $" + bigBlind);
+        informAllPlayers("INFO " + actor.getName() + " posts big blind of " + bigBlind);
         pause(sleeptime);
     }
     
@@ -313,32 +324,47 @@ public class Table {
         }
         
         while (playersToBet > 0) {
+            nextActor(actor);
+            String response;
             Action action;
+            int actionBet;
             
             // Actor is all-in, so he checks
             // TODO: debug NullPointerException
-            if (actor.getLastAction() == Action.ALL_IN) {
+            if (actor.isAllIn()) {
                 action = Action.CHECK;
                 playersToBet--;
             }
             // Actor can choose how to act
             else {
                 String legalActions = getLegalActions(actor);
-                action = getActionFromPlayer(legalActions);// TODO: get action
-                                                           // from Client, first
-                                                           // send him
-                // legalActions
+                response = informPlayer(("NOWACT " + minBet + "#" + legalActions), actor, true);
+                action = getActionFromResponse(response);
+                actionBet = getBetFromResponse(response);
+                
                 playersToBet--;
                 
                 if (action == Action.CHECK) {
                     // nothing to do, dude
+                } else if (action == Action.ALL_IN) {
+                    actor.allIn();
+                    int allInAmount = actor.getMoney();
+                    bet += allInAmount;
+                    minBet = allInAmount;
+                    actor.setBet(bet);
+                    actor.pay(allInAmount);
+                    contributePot(allInAmount);
                 } else if (action == Action.CALL) {
                     int toSettleBet = (bet - actor.getBet());
+                    if(toSettleBet == actor.getMoney()) {
+                        actor.isAllIn();
+                        action = Action.ALL_IN;
+                    }
                     actor.pay(toSettleBet);
                     actor.setBet(actor.getBet() + toSettleBet);
                     contributePot(toSettleBet);
                 } else if (action == Action.BET) {
-                    int betAmount = 0;// TODO: equals to bet send by Client;
+                    int betAmount = actionBet;
                     actor.setBet(betAmount);
                     actor.pay(betAmount);
                     contributePot(betAmount);
@@ -347,7 +373,7 @@ public class Table {
                     // all players get another round
                     playersToBet = activePlayersNum;
                 } else if (action == Action.RAISE) {
-                    int raiseAmount = 0;// TODO: equals to raise send by Client
+                    int raiseAmount = actionBet;
                     bet += raiseAmount;
                     minBet = raiseAmount;
                     int toRaiseBet = (bet - actor.getBet());
@@ -372,9 +398,23 @@ public class Table {
                 }
             }
             actor.setLastAction(action);
-            if (playersToBet > 0) {
-                // TODO: refresh board/client NOTIFY
-            }
+            // if (playersToBet > 0) {
+            // inform about actors action
+            String message = "ACTION " + "Player" + playersList.indexOf(actor) + " " + actor.getLastAction().getName();
+            informAllPlayers(message);
+            // inform about players bet amount
+            message = "BET " + "Player" + playersList.indexOf(actor) + " $" + actor.getBet();
+            informAllPlayers(message);
+            // update players money
+            message = "MONEY Player" + playersList.indexOf(actor) + " " + actor.getMoney();
+            informAllPlayers(message);
+            // display info about play
+            message = "INFO " + actor.getName() + " " + actor.getLastAction().toString();
+            informAllPlayers(message);
+            // update pot value
+            message = "POT " + getTotalPot();
+            informAllPlayers(message);
+            // }
         }
         
         // reset bets
@@ -382,6 +422,7 @@ public class Table {
             player.setBet(0);
             player.setLastAction(null);
         }
+        informAllPlayers("RESETBETS");
         
     }
     
@@ -407,17 +448,15 @@ public class Table {
         String legalActions = "";
         // if player is all-in he can only check and wait for showdown
         if (actor.getLastAction() == Action.ALL_IN) {
-            legalActions.concat(" CHECK");
+            legalActions = legalActions.concat(" btnCheck");
         }
         // else if player is not all-in and can something more
         else {
             // if no bet was placed yet (so no first betting as then it is equal
             // to big blind)
             if (bet == 0) {
-                // legalActions.add(Action.CHECK);
-                legalActions.concat(" CHECK");
-                // legalActions.add(Action.BET);
-                legalActions.concat(" BET");
+                legalActions = legalActions.concat(" btnCheck");
+                legalActions = legalActions.concat(" btnBet");
             }
             // if there is some bet posted
             // and actor have more money than difference between his and table
@@ -425,79 +464,68 @@ public class Table {
             else if ((bet - actor.getBet()) < actor.getMoney()) {
                 // and actor's bet is not equal to that on table
                 if (actor.getBet() < bet) {
-                    // legalActions.add(Action.CALL);
-                    legalActions.concat(" CALL");
-                    // legalActions.add(Action.RAISE);
-                    legalActions.concat(" RAISE");
+                    legalActions = legalActions.concat(" btnCall");
+                    legalActions = legalActions.concat(" btnRaise");
                 }
                 // or his bet is equal to that on table
                 else {
-                    // legalActions.add(Action.CHECK);
-                    legalActions.concat(" CHECK");
-                    // legalActions.add(Action.RAISE);
-                    legalActions.concat(" RAISE");
+                    legalActions = legalActions.concat(" btnCheck");
+                    legalActions = legalActions.concat(" btnRaise");
                 }
             }
             // if actor have money equal to difference between his and table bet
             else if ((bet - actor.getBet()) == actor.getMoney()) {
-                // legalActions.add(Action.CALL);
-                legalActions.concat(" CALL");
+                legalActions = legalActions.concat(" btnCall");
             }
             // and every active not all-in player can fold and go all-in
-            // legalActions.add(Action.ALL_IN);
-            legalActions.concat(" ALL_IN");
-            // legalActions.add(Action.FOLD);
-            legalActions.concat(" FOLD");
+            legalActions = legalActions.concat(" btnAllIn");
+            legalActions = legalActions.concat(" btnFold");
         }
         return legalActions;
     }
     
     /**
-     * Sends request to client to choose action
+     * Gets action from message received from client
      * 
-     * @param legalActions
-     * @return
+     * @param response
+     *            string output from client
+     * @return action enum
      */
-    private Action getActionFromPlayer(String legalActions) {
+    private Action getActionFromResponse(String response) {
         Action action = null;
-        String response = "";
-        String message = "ACT" + legalActions;
         
-        BufferedReader in = null;
-        PrintWriter out = null;
-        
-        try {
-            in = new BufferedReader(new InputStreamReader(actor.getSocket().getInputStream()));
-            out = new PrintWriter(actor.getSocket().getOutputStream(), true);
-            out.println(message);
-            System.out.println("[GETACTION] Waiting for action from " + actor.getName());
-            response = in.readLine();
-            System.out.println("[GETACTION] Got response: " + response);
-        } catch (IOException e) {
-            System.out.println("[TABLE] Inform player I/O Exception");
-        } catch (NullPointerException e) {
-            ; // TODO player disconected
-        }
-        if (response.startsWith("CHECK")) {
-            action = Action.CHECK;
-        }
-        if (response.startsWith("BET")) {
+        if (response.startsWith("BET"))
             action = Action.BET;
-        }
-        if (response.startsWith("RAISE")) {
-            action = Action.RAISE;
-        }
-        if (response.startsWith("CALL")) {
+        if (response.startsWith("CHECK"))
+            action = Action.CHECK;
+        if (response.startsWith("CALL"))
             action = Action.CALL;
-        }
-        if (response.startsWith("FOLD")) {
-            action = Action.FOLD;
-        }
-        if (response.startsWith("ALL_IN")) {
+        if (response.startsWith("RAISE"))
+            action = Action.RAISE;
+        if (response.startsWith("ALL_IN"))
             action = Action.ALL_IN;
-        }
-        // TODO jakos dorwac wartosc zakladu przy BET i RAISE
+        if (response.startsWith("FOLD"))
+            action = Action.FOLD;
+            
         return action;
+    }
+    
+    /**
+     * Gets bet amount from message received from client
+     * 
+     * @param response
+     *            string output from client
+     * @return bet amount
+     */
+    private int getBetFromResponse(String response) {
+        int index = response.indexOf(" ") + 1;
+        int bet = 0;
+        try {
+            bet = Integer.parseInt(response.substring(index));
+        } catch (NumberFormatException e) {
+        }
+        
+        return bet;
     }
     
     /**
@@ -508,7 +536,11 @@ public class Table {
      */
     private void dealCommunityCards(int amount) {
         for (int j = 0; j < amount; j++) {
-            board.add(deck.drawFromDeck());
+            Card card = deck.drawFromDeck();
+            board.add(card);
+            int index = board.size();
+            informAllPlayers("CARDCOMMUNITY Card" + index + " " + card.toString());
+            pause(sleeptime);
         }
     }
     
@@ -516,6 +548,8 @@ public class Table {
      * Deals money to winners
      */
     private void showdown() {
+        informAllPlayers("INFO Showdown!");
+        pause(sleeptime);
         /**
          * TreeMap of summary hand values that finally settles winers order for
          * each summaryHandValue there is HashMap that keeps players with that
@@ -536,6 +570,12 @@ public class Table {
             
             playersMap.put(player, handValue);
             playersRanking.put(summaryValue, playersMap);
+            Card[] cards = player.getHandCards();
+            informAllPlayers("CARDPLAYER Player" + playersList.indexOf(player) + " " + cards[0].toString() + " "
+                    + cards[1].toString());
+            informAllPlayers("VALUEPLAYER Player" + playersList.indexOf(player) + " " + handValue.name());
+            informAllPlayers("INFO " + player.getName() + " has " + handValue.toString());
+            pause(sleeptime);
         }
         
         Map<Player, Integer> potsDistribution = new HashMap<>();
@@ -586,6 +626,9 @@ public class Table {
         for (Player winner : potsDistribution.keySet()) {
             int potWinning = potsDistribution.get(winner);
             winner.win(potWinning);
+            informAllPlayers("INFO " + winner.getName() + " wins $" + potWinning);
+            informAllPlayers("MONEY Player" + playersList.indexOf(winner) + " " + winner.getMoney());
+            pause(sleeptime * 2);
         }
     }
     

@@ -45,6 +45,13 @@ public class Client {
         }
     }
     
+    /**
+     * @return the clientThread
+     */
+    public ClientThread getClientThread() {
+        return clientThread;
+    }
+
     public static void main(String[] args) {
         
         new Client();
@@ -52,6 +59,10 @@ public class Client {
     
     public void createClientWindow() {
         clientWindow = new ClientWindow(this);
+    }
+    
+    public void sendToServer(String message) {
+        out.println(message);
     }
     
     /**

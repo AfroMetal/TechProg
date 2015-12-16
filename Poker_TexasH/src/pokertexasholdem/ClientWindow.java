@@ -27,24 +27,26 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import java.awt.Cursor;
 
-public class ClientWindow extends JFrame implements ActionListener{
+public class ClientWindow extends JFrame implements ActionListener {
     
     private static final long serialVersionUID = -3284948846300183038L;
     private Client client;
-    private Map<String, JLabel> mapLblDealer= new HashMap<String, JLabel>();
-    private Map<String, JLabel> mapLblName= new HashMap<String, JLabel>();
-    private Map<String, JLabel> mapLblMoney= new HashMap<String, JLabel>();
-    private Map<String, JLabel> mapLblAction= new HashMap<String, JLabel>();
-    private Map<String, JLabel> mapLblBet= new HashMap<String, JLabel>();
-    private Map<String, JLabel> mapLblCardPlayer= new HashMap<String, JLabel>();
-    private Map<String, JLabel> mapLblCardCommunity= new HashMap<String, JLabel>();
+    private Map<String, JLabel> mapLblDealer = new HashMap<String, JLabel>();
+    private Map<String, JLabel> mapLblName = new HashMap<String, JLabel>();
+    private Map<String, JLabel> mapLblMoney = new HashMap<String, JLabel>();
+    private Map<String, JLabel> mapLblAction = new HashMap<String, JLabel>();
+    private Map<String, JLabel> mapLblBet = new HashMap<String, JLabel>();
+    private Map<String, JLabel> mapLblCardPlayer = new HashMap<String, JLabel>();
+    private Map<String, JLabel> mapLblCardCommunity = new HashMap<String, JLabel>();
+    private Map<String, JButton> mapBtnAction = new HashMap<String, JButton>();
+    private JSpinner spinnerBetRaise;
     private JFormattedTextField spinnerTextField;
     private JLabel lblCard1, lblCard2, lblInfo, lblPotValue;
     
     /**
      * Create the application.
      */
-    public ClientWindow(Client client) {
+    public ClientWindow( Client client ) {
         this.client = client;
         initialize();
     }
@@ -171,7 +173,7 @@ public class ClientWindow extends JFrame implements ActionListener{
         lblNamePlayer3.setHorizontalAlignment(SwingConstants.CENTER);
         mapLblName.put("Player3", lblNamePlayer3);
         playersDataPanel.add(lblNamePlayer3);
-
+        
         JLabel lblNamePlayer4 = new JLabel("");
         lblNamePlayer4.setVerticalAlignment(SwingConstants.BOTTOM);
         lblNamePlayer4.setForeground(new Color(255, 255, 204));
@@ -441,6 +443,7 @@ public class ClientWindow extends JFrame implements ActionListener{
         lblBetPlayer5.setFont(new Font("Cambria Math", Font.PLAIN, 15));
         lblBetPlayer5.setForeground(new Color(255, 255, 153));
         lblBetPlayer5.setHorizontalAlignment(SwingConstants.CENTER);
+        mapLblBet.put("Player5", lblBetPlayer5);
         playersDataPanel.add(lblBetPlayer5);
         
         JLabel lblBetPlayer6 = new JLabel("");
@@ -655,7 +658,7 @@ public class ClientWindow extends JFrame implements ActionListener{
         lblInfo.setFont(new Font("Cambria Math", Font.PLAIN, 22));
         lblInfo.setHorizontalAlignment(SwingConstants.CENTER);
         infoPanel.add(lblInfo, BorderLayout.CENTER);
-                
+        
         JPanel potValuePanel = new JPanel();
         potValuePanel.setBackground(new Color(35, 70, 35));
         potValuePanel.setBounds(10, 260, 984, 50);
@@ -686,7 +689,7 @@ public class ClientWindow extends JFrame implements ActionListener{
         lblFlopCard1.setBorder(new LineBorder(new Color(0, 0, 0), 2));
         lblFlopCard1.setBackground(new Color(255, 255, 255));
         lblFlopCard1.setOpaque(false);
-        mapLblCardCommunity.put("Card1Flop", lblFlopCard1);
+        mapLblCardCommunity.put("Card1", lblFlopCard1);
         communityCardsPanel.add(lblFlopCard1);
         
         JLabel lblFlopCard2 = new JLabel("");
@@ -695,7 +698,7 @@ public class ClientWindow extends JFrame implements ActionListener{
         lblFlopCard2.setBorder(new LineBorder(new Color(0, 0, 0), 2));
         lblFlopCard2.setBackground(new Color(255, 255, 255));
         lblFlopCard2.setOpaque(false);
-        mapLblCardCommunity.put("Card2Flop", lblFlopCard2);
+        mapLblCardCommunity.put("Card2", lblFlopCard2);
         communityCardsPanel.add(lblFlopCard2);
         
         JLabel lblFlopCard3 = new JLabel("");
@@ -704,7 +707,7 @@ public class ClientWindow extends JFrame implements ActionListener{
         lblFlopCard3.setBorder(new LineBorder(new Color(0, 0, 0), 2));
         lblFlopCard3.setBackground(new Color(255, 255, 255));
         lblFlopCard3.setOpaque(false);
-        mapLblCardCommunity.put("Card3Flop", lblFlopCard3);
+        mapLblCardCommunity.put("Card3", lblFlopCard3);
         communityCardsPanel.add(lblFlopCard3);
         
         JLabel lblTurnCard = new JLabel("");
@@ -713,7 +716,7 @@ public class ClientWindow extends JFrame implements ActionListener{
         lblTurnCard.setBorder(new LineBorder(new Color(0, 0, 0), 2));
         lblTurnCard.setBackground(new Color(255, 255, 255));
         lblTurnCard.setOpaque(false);
-        mapLblCardCommunity.put("Card1Turn", lblTurnCard);
+        mapLblCardCommunity.put("Card4", lblTurnCard);
         communityCardsPanel.add(lblTurnCard);
         
         JLabel lblRiverCard = new JLabel("");
@@ -722,7 +725,7 @@ public class ClientWindow extends JFrame implements ActionListener{
         lblRiverCard.setBorder(new LineBorder(new Color(0, 0, 0), 2));
         lblRiverCard.setBackground(new Color(255, 255, 255));
         lblRiverCard.setOpaque(false);
-        mapLblCardCommunity.put("Card1River", lblRiverCard);
+        mapLblCardCommunity.put("Card5", lblRiverCard);
         communityCardsPanel.add(lblRiverCard);
         
         JPanel buttonsPanel = new JPanel();
@@ -733,68 +736,62 @@ public class ClientWindow extends JFrame implements ActionListener{
         
         JButton btnCheck = new JButton("Check");
         btnCheck.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnCheck.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-            }
-        });
+        btnCheck.addActionListener(this);
         btnCheck.setForeground(new Color(30, 70, 30));
         btnCheck.setBackground(new Color(255, 255, 204));
         btnCheck.setFont(new Font("Cambria Math", Font.PLAIN, 22));
+        btnCheck.setEnabled(false);
+        mapBtnAction.put("btnCheck", btnCheck);
         buttonsPanel.add(btnCheck);
         
         JButton btnBet = new JButton("Bet");
         btnBet.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnBet.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
+        btnBet.addActionListener(this);
         btnBet.setForeground(new Color(30, 70, 30));
         btnBet.setBackground(new Color(255, 255, 204));
         btnBet.setFont(new Font("Cambria Math", Font.PLAIN, 22));
+        btnBet.setEnabled(false);
+        mapBtnAction.put("btnBet", btnBet);
         buttonsPanel.add(btnBet);
         
         JButton btnRaise = new JButton("Raise");
         btnRaise.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnRaise.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
+        btnRaise.addActionListener(this);
         btnRaise.setForeground(new Color(30, 70, 30));
         btnRaise.setBackground(new Color(255, 255, 204));
         btnRaise.setFont(new Font("Cambria Math", Font.PLAIN, 22));
+        btnRaise.setEnabled(false);
+        mapBtnAction.put("btnRaise", btnRaise);
         buttonsPanel.add(btnRaise);
         
         JButton btnCall = new JButton("Call");
         btnCall.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnCall.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
+        btnCall.addActionListener(this);
         btnCall.setForeground(new Color(30, 70, 30));
         btnCall.setBackground(new Color(255, 255, 204));
         btnCall.setFont(new Font("Cambria Math", Font.PLAIN, 22));
+        btnCall.setEnabled(false);
+        mapBtnAction.put("btnCall", btnCall);
         buttonsPanel.add(btnCall);
         
         JButton btnFold = new JButton("Fold");
         btnFold.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnFold.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
+        btnFold.addActionListener(this);
         btnFold.setForeground(new Color(30, 70, 30));
         btnFold.setBackground(new Color(255, 255, 204));
         btnFold.setFont(new Font("Cambria Math", Font.PLAIN, 22));
+        btnFold.setEnabled(false);
+        mapBtnAction.put("btnFold", btnFold);
         buttonsPanel.add(btnFold);
         
         JButton btnAllIn = new JButton("All-in");
         btnAllIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnAllIn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
+        btnAllIn.addActionListener(this);
         btnAllIn.setForeground(new Color(30, 70, 30));
         btnAllIn.setBackground(new Color(255, 255, 204));
         btnAllIn.setFont(new Font("Cambria Math", Font.PLAIN, 22));
+        btnAllIn.setEnabled(false);
+        mapBtnAction.put("btnAllIn", btnAllIn);
         buttonsPanel.add(btnAllIn);
         
         JLabel lblBetRaiseDollar = new JLabel("$");
@@ -805,12 +802,12 @@ public class ClientWindow extends JFrame implements ActionListener{
         lblBetRaiseDollar.setBounds(130, 589, 34, 50);
         getContentPane().add(lblBetRaiseDollar);
         
-        JSpinner spinnerBetRaise = new JSpinner();
+        spinnerBetRaise = new JSpinner();
         spinnerBetRaise.setVerifyInputWhenFocusTarget(false);
         spinnerBetRaise.setRequestFocusEnabled(false);
         spinnerBetRaise.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         spinnerBetRaise.setEditor(new JSpinner.DefaultEditor(spinnerBetRaise));
-        spinnerTextField = ((DefaultEditor)spinnerBetRaise.getEditor()).getTextField();
+        spinnerTextField = ((DefaultEditor) spinnerBetRaise.getEditor()).getTextField();
         spinnerTextField.setBackground(new Color(255, 255, 255));
         spinnerTextField.setEditable(false);
         spinnerTextField.setHorizontalAlignment(JTextField.RIGHT);
@@ -819,7 +816,7 @@ public class ClientWindow extends JFrame implements ActionListener{
         spinnerBetRaise.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         spinnerBetRaise.setToolTipText("set Bet or Raise value");
         spinnerBetRaise.setBorder(null);
-        spinnerBetRaise.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(5)));
+        spinnerBetRaise.setModel(new SpinnerNumberModel(new Integer(5), new Integer(5), null, new Integer(5)));
         spinnerBetRaise.setFont(new Font("Cambria Math", Font.PLAIN, 28));
         spinnerBetRaise.setBounds(161, 589, 189, 50);
         getContentPane().add(spinnerBetRaise);
@@ -831,7 +828,6 @@ public class ClientWindow extends JFrame implements ActionListener{
         playerCardsPanel.setLayout(new GridLayout(0, 2, 10, 0));
         
         lblCard1 = new JLabel("");
-        lblCard1.setForeground(new Color(0, 0, 0));
         lblCard1.setFont(new Font("SansSerif", Font.BOLD, 50));
         lblCard1.setHorizontalAlignment(SwingConstants.CENTER);
         lblCard1.setBorder(new LineBorder(new Color(0, 0, 0), 2));
@@ -840,7 +836,6 @@ public class ClientWindow extends JFrame implements ActionListener{
         playerCardsPanel.add(lblCard1);
         
         lblCard2 = new JLabel("");
-        lblCard2.setForeground(new Color(0, 0, 0));
         lblCard2.setFont(new Font("SansSerif", Font.BOLD, 50));
         lblCard2.setHorizontalAlignment(SwingConstants.CENTER);
         lblCard2.setBorder(new LineBorder(new Color(0, 0, 0), 2));
@@ -849,7 +844,7 @@ public class ClientWindow extends JFrame implements ActionListener{
         playerCardsPanel.add(lblCard2);
         
     }
-
+    
     public String getBid() {
         String bid = spinnerTextField.getText();
         spinnerTextField.setText(null);
@@ -866,11 +861,10 @@ public class ClientWindow extends JFrame implements ActionListener{
     
     public void setDealer(String playerAndIndex) {
         JLabel label = mapLblDealer.get(playerAndIndex);
-        for(JLabel lbl : mapLblDealer.values()) {
-            if(lbl != label) {
+        for (JLabel lbl : mapLblDealer.values()) {
+            if (lbl != label) {
                 lbl.setText("");
-            }
-            else {
+            } else {
                 lbl.setText("Dealer");
             }
         }
@@ -878,12 +872,13 @@ public class ClientWindow extends JFrame implements ActionListener{
     
     public void setActor(String playerAndIndex) {
         JLabel label = mapLblName.get(playerAndIndex);
-        for(JLabel lbl : mapLblName.values()) {
-            if(lbl != label) {
+        for (JLabel lbl : mapLblName.values()) {
+            if (lbl != label) {
                 lbl.setForeground(new Color(255, 255, 204));
-            }
-            else {
+                lbl.repaint();
+            } else {
                 lbl.setForeground(new Color(204, 51, 51));
+                lbl.repaint();
             }
         }
     }
@@ -903,20 +898,20 @@ public class ClientWindow extends JFrame implements ActionListener{
         label.setText(lastAction);
     }
     
-    public void setBet(String playerAndIndex, String bet){
+    public void setBet(String playerAndIndex, String bet) {
         JLabel label = mapLblBet.get(playerAndIndex);
-        label.setText("$" + bet);
+        label.setText(bet);
     }
     
-    // cardAndIndexPlayerAndIndex is string like "Card1Player2" or "Card2Player9"
+    // cardAndIndexPlayerAndIndex is string like "Card1Player2" or
+    // "Card2Player9"
     public void setCardPlayer(String cardAndIndexPlayerAndIndex, String rankSuit) {
         // ♠♣♥♦
         JLabel label = mapLblCardPlayer.get(cardAndIndexPlayerAndIndex);
         label.setText(rankSuit);
-        if(rankSuit.endsWith("♦") || rankSuit.endsWith("♥")) {
+        if (rankSuit.endsWith("♦") || rankSuit.endsWith("♥")) {
             label.setForeground(new Color(180, 20, 20));
-        }
-        else {
+        } else {
             label.setForeground(new Color(20, 20, 20));
         }
     }
@@ -925,124 +920,193 @@ public class ClientWindow extends JFrame implements ActionListener{
         // ♠♣♥♦
         JLabel label = mapLblCardCommunity.get(cardAndIndexDealName);
         label.setText(rankSuit);
-        if(rankSuit.endsWith("♦") || rankSuit.endsWith("♥")) {
+        if (rankSuit.endsWith("♦") || rankSuit.endsWith("♥")) {
             label.setForeground(new Color(180, 20, 20));
-        }
-        else {
+        } else {
             label.setForeground(new Color(20, 20, 20));
         }
-        if(rankSuit != "") {
+        if (rankSuit != "") {
             label.setOpaque(true);
-        }
-        else {
+        } else {
             label.setOpaque(false);
         }
     }
     
     public void setCards(String card1RankSuit, String card2RankSuit) {
-        if(card1RankSuit.endsWith("♦") || card1RankSuit.endsWith("♥")) {
+        if (card1RankSuit.endsWith("♦") || card1RankSuit.endsWith("♥")) {
             lblCard1.setForeground(new Color(180, 20, 20));
-        }
-        else {
+        } else {
             lblCard1.setForeground(new Color(20, 20, 20));
         }
-        if(card2RankSuit.endsWith("♦") || card2RankSuit.endsWith("♥")) {
+        if (card2RankSuit.endsWith("♦") || card2RankSuit.endsWith("♥")) {
             lblCard2.setForeground(new Color(180, 20, 20));
-        }
-        else {
+        } else {
             lblCard2.setForeground(new Color(20, 20, 20));
         }
         lblCard1.setText(card1RankSuit);
         lblCard2.setText(card2RankSuit);
     }
-
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
+    public void actionPerformed(ActionEvent event) {
+        performedAction(event.getSource());
         
     }
-
+    
+    public void performedAction(Object source) {
+        String message = "";
+        
+        if (source == mapBtnAction.get("btnBet")) {
+            message = "BET " + getBid();
+            for (JButton button : getMapBtnAction().values()) {
+                button.setEnabled(false);
+            }
+            getSpinnerBetRaise().setModel(new SpinnerNumberModel(new Integer(5), new Integer(5), null, new Integer(5)));
+            getSpinnerTextField().setText("5");
+        }
+        if (source == mapBtnAction.get("btnCall")) {
+            message = "CALL " + getBid();
+            for (JButton button : getMapBtnAction().values()) {
+                button.setEnabled(false);
+            }
+            getSpinnerBetRaise().setModel(new SpinnerNumberModel(new Integer(5), new Integer(5), null, new Integer(5)));
+            getSpinnerTextField().setText("5");
+        }
+        if (source == mapBtnAction.get("btnRaise")) {
+            message = "RAISE " + getBid();
+            for (JButton button : getMapBtnAction().values()) {
+                button.setEnabled(false);
+            }
+            getSpinnerBetRaise().setModel(new SpinnerNumberModel(new Integer(5), new Integer(5), null, new Integer(5)));
+            getSpinnerTextField().setText("5");
+        }
+        if (source == mapBtnAction.get("btnCheck")) {
+            message = "CHECK " + getBid();
+            for (JButton button : getMapBtnAction().values()) {
+                button.setEnabled(false);
+            }
+            getSpinnerBetRaise().setModel(new SpinnerNumberModel(new Integer(5), new Integer(5), null, new Integer(5)));
+            getSpinnerTextField().setText("5");
+        }
+        if (source == mapBtnAction.get("btnAllIn")) {
+            message = "ALL_IN " + getBid();
+            for (JButton button : getMapBtnAction().values()) {
+                button.setEnabled(false);
+            }
+            getSpinnerBetRaise().setModel(new SpinnerNumberModel(new Integer(5), new Integer(5), null, new Integer(5)));
+            getSpinnerTextField().setText("5");
+        }
+        if (source == mapBtnAction.get("btnFold")) {
+            message = "FOLD " + getBid();
+            for (JButton button : getMapBtnAction().values()) {
+                button.setEnabled(false);
+            }
+            getSpinnerBetRaise().setModel(new SpinnerNumberModel(new Integer(5), new Integer(5), null, new Integer(5)));
+            getSpinnerTextField().setText("5");
+        }
+        
+        client.sendToServer(message);
+    }
+    
+    /**
+     * @return the client
+     */
+    public Client getClient() {
+        return client;
+    }
+    
     /**
      * @return the mapLblDealer
      */
     public Map<String, JLabel> getMapLblDealer() {
         return mapLblDealer;
     }
-
+    
     /**
      * @return the mapLblName
      */
     public Map<String, JLabel> getMapLblName() {
         return mapLblName;
     }
-
+    
     /**
      * @return the mapLblMoney
      */
     public Map<String, JLabel> getMapLblMoney() {
         return mapLblMoney;
     }
-
+    
     /**
      * @return the mapLblAction
      */
     public Map<String, JLabel> getMapLblAction() {
         return mapLblAction;
     }
-
+    
     /**
      * @return the mapLblBet
      */
     public Map<String, JLabel> getMapLblBet() {
         return mapLblBet;
     }
-
+    
     /**
      * @return the mapLblCardPlayer
      */
     public Map<String, JLabel> getMapLblCardPlayer() {
         return mapLblCardPlayer;
     }
-
+    
     /**
      * @return the mapLblCardCommunity
      */
     public Map<String, JLabel> getMapLblCardCommunity() {
         return mapLblCardCommunity;
     }
-
+    
+    /**
+     * @return the mapBtnAction
+     */
+    public Map<String, JButton> getMapBtnAction() {
+        return mapBtnAction;
+    }
+    
     /**
      * @return the spinnerTextField
      */
     public JFormattedTextField getSpinnerTextField() {
         return spinnerTextField;
     }
-
+    
     /**
      * @return the lblCard1
      */
     public JLabel getLblCard1() {
         return lblCard1;
     }
-
+    
     /**
      * @return the lblCard2
      */
     public JLabel getLblCard2() {
         return lblCard2;
     }
-
+    
     /**
      * @return the lblInfo
      */
     public JLabel getLblInfo() {
         return lblInfo;
     }
-
+    
     /**
      * @return the lblPotValue
      */
     public JLabel getLblPotValue() {
         return lblPotValue;
+    }
+    
+    public JSpinner getSpinnerBetRaise() {
+        return spinnerBetRaise;
     }
 }

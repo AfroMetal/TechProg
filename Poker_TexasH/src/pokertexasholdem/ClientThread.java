@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.swing.SpinnerNumberModel;
+
 public class ClientThread implements Runnable {
     
     private Client client;
@@ -25,7 +27,7 @@ public class ClientThread implements Runnable {
     
     private void listenSocket() throws NullPointerException, IOException {
         
-        String message;
+        String message = "";
         
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -42,8 +44,9 @@ public class ClientThread implements Runnable {
             connectionWindow.setTitleText("Wrong port");
         }
         
-        while (true) {
+        while (message != null) {
             message = in.readLine();
+            System.out.println("[THREAD] Got message: " + message);
             
             if (message.startsWith("[CONNECTED]")) {
                 connectionWindow.setBtnConnectEnabled(false);
@@ -57,19 +60,46 @@ public class ClientThread implements Runnable {
             }
             
             if (message.startsWith("GAMEREADY")) {
+                clientWindow.setAutoRequestFocus(true);
                 clientWindow.setVisible(true);
+                connectionWindow.setVisible(false);
+                clientWindow.toFront();
+            }
+            
+            if (message.startsWith("NOWACT")) {
+                String[] parts = message.split("#");
+                Integer minBet = Integer.parseInt(parts[0].substring(7));
+                String[] legalActions = parts[1].substring(1).split(" ");
+                clientWindow.getSpinnerBetRaise().setModel(new SpinnerNumberModel(new Integer(minBet), new Integer(minBet), null, new Integer(5)));
+                clientWindow.getSpinnerTextField().setText(minBet.toString());
+                for (String btnAction : legalActions) {
+                    clientWindow.getMapBtnAction().get(btnAction).setEnabled(true);
+                }
+                clientWindow.setLblInfoText("It is your turn");
             }
             
             if (message.startsWith("MONEY")) {
-                // parts[0] = "MONEY" parts[1] = "Player#" parts[2] = <amount>
-                String[] parts = message.split(" ");
-                clientWindow.setMoney(parts[1], parts[2]);
+                // parts[0] = "Player#" parts[1] = <amount>
+                String[] parts = message.substring(6).split(" ");
+                clientWindow.setMoney(parts[0], parts[1]);
             }
             
             if (message.startsWith("NAME")) {
-                // parts[0] = "NAME" parts[1] = "Player#" parts[2] = <name>
-                String[] parts = message.split(" ");
-                clientWindow.setName(parts[1], parts[2]);
+                // parts[0] = "Player#" parts[1] = <name>
+                String[] parts = message.substring(5).split(" ");
+                clientWindow.setName(parts[0], parts[1]);
+            }
+            
+            if (message.startsWith("ACTION")) {
+                // parts[0] = "Player#" parts[1] = <action>
+                String[] parts = message.substring(7).split(" ");
+                clientWindow.setAction(parts[0], parts[1]);
+            }
+            
+            if (message.startsWith("BET")) {
+                // parts[] = "Player#" parts[1] = <amount>
+                String[] parts = message.substring(4).split(" ");
+                clientWindow.setBet(parts[0], parts[01]);
             }
             
             if (message.startsWith("INFO")) {
@@ -85,6 +115,20 @@ public class ClientThread implements Runnable {
             if (message.startsWith("ACTOR")) {
                 String actor = message.substring(6);
                 clientWindow.setActor(actor);
+            }
+            
+            if (message.startsWith("POT")) {
+                String value = message.substring(4);
+                clientWindow.setLblPotValue(value);
+            }
+            
+            if (message.startsWith("RESETBETS")) {
+                for (String playerAndIndex : clientWindow.getMapLblAction().keySet()) {
+                    clientWindow.setAction(playerAndIndex, "");
+                }
+                for (String playerAndIndex : clientWindow.getMapLblBet().keySet()) {
+                    clientWindow.setBet(playerAndIndex, "");
+                }
             }
             
             if (message.startsWith("RESETROUND")) {
@@ -105,17 +149,33 @@ public class ClientThread implements Runnable {
             }
             // TODO implement in Table
             if (message.startsWith("CARDPLAYER")) {
-                // parts[0] = "CARDPLAYER" parts[1] = "Card#Player#" parts[2] =
-                // <rank><suit>
-                
+                // parts[0] = "Player#" parts[1] = <rank><suit> parts[2] = <rank><suit>
+                // setCardPlayer("Card1" + parts[0], parts[1])
+                String[] parts = message.substring(11).split(" ");
+                clientWindow.setCardPlayer("Card1"+parts[0], parts[1]);
+                clientWindow.setCardPlayer("Card2"+parts[0], parts[2]);
+            }
+            
+            if (message.startsWith("VALUEPLAYER")) {
+             // parts[0] = "Player#" parts[1] = <value>
+                String[] parts = message.substring(12).split(" ");
+                clientWindow.setBet(parts[0], parts[1]);
+            }
+            
+            if (message.startsWith("CARDCOMMUNITY")) {
+                // parts[0] = "Card#" parts[1] = <rank><suit>
+                String[] parts = message.substring(14).split(" ");
+                clientWindow.setCardCommunity(parts[0], parts[1]);
+                clientWindow.setLblInfoText("Dealer draw " + parts[1]);
             }
             
             if (message.startsWith("YOURCARDS")) {
-                // parts[0] = "YOURCARDS" parts[1] = <rankCard1><suitCard1>
-                // parts[2] = <rankCard2><suitCard2>
-                String[] parts = message.split(" ");
-                clientWindow.setCards(parts[1], parts[2]);
+                // parts[0] = <rankCard1><suitCard1> parts[1] =
+                // <rankCard2><suitCard2>
+                String[] parts = message.substring(10).split(" ");
+                clientWindow.setCards(parts[0], parts[1]);
             }
+            System.out.println("[THREAD]    Done.");
         }
     }
     
