@@ -1,4 +1,4 @@
-package pokertexasholdem;
+package pokertexasholdem.client;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;

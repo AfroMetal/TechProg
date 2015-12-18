@@ -1,4 +1,4 @@
-package pokertexasholdem;
+package pokertexasholdem.client;
 
 import java.util.HashMap;
 import java.util.Map;

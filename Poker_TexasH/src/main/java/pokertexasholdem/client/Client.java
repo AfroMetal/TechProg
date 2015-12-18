@@ -1,4 +1,4 @@
-package pokertexasholdem;
+package pokertexasholdem.client;
 
 import java.io.IOException;
 import java.io.PrintWriter;
