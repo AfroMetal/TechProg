@@ -354,19 +354,27 @@ public class Table {
                 action = getActionFromResponse(response);
                 actionBet = getBetFromResponse(response);
                 
+                // if player wants to raise for more than he have, its all-in
+                if(actionBet > actor.getMoney()) {
+                	actionBet = actor.getMoney();
+                	action = Action.ALL_IN;
+                }
+                
                 playersToBet--;
                 
                 if (action == Action.CHECK) {
                     // nothing to do, dude
                 } else if (action == Action.ALL_IN) {
+                	actionBet = actor.getMoney();
                     actor.allIn();
-                    int allInAmount = actor.getMoney();
-                    bet += allInAmount;
-                    minBet = allInAmount;
-                    int toAllIn = (bet - actor.getBet());
-                    actor.setBet(bet);
-                    actor.pay(toAllIn);
-                    contributePot(toAllIn);
+                    int raiseAmount = actionBet - (bet - actor.getBet());
+                    bet += raiseAmount;
+                    minBet = raiseAmount;
+                    actor.setBet(actor.getBet() + actionBet);
+                    actor.pay(actionBet);
+                    contributePot(actionBet);
+                    // all players get another round
+                    playersToBet = activePlayersNum;
                 } else if (action == Action.CALL) {
                     int toSettleBet = (bet - actor.getBet());
                     if(toSettleBet == actor.getMoney()) {
@@ -454,6 +462,8 @@ public class Table {
                 // update pot value
                 message = "POT " + getTotalPot();
                 informAllPlayers(message);
+                
+                pause(sleeptime);
             }
         }
         
