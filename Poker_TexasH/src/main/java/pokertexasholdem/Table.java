@@ -441,7 +441,7 @@ public class Table {
                         
                         pause(sleeptime * 2);
                         
-                        continueRound = true;
+                        continueRound = false;
                     }
                 }
             }
