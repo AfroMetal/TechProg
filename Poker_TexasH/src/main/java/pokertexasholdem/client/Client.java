@@ -9,7 +9,7 @@ public class Client {
     private Socket socket;
     private ClientThread clientThread;
     private PrintWriter out;
-    
+    private String name;
     private ConnectionWindow connectionWindow;
     private ClientWindow clientWindow;
     
@@ -18,6 +18,7 @@ public class Client {
     }
     
     public void connect(String adress, String port, String name) {
+    	this.name = name;
         try {
             
             socket = new Socket(adress, Integer.parseInt(port));
@@ -58,7 +59,7 @@ public class Client {
     }
     
     public void createClientWindow() {
-        clientWindow = new ClientWindow(this);
+        clientWindow = new ClientWindow(this, name);
     }
     
     public void sendToServer(String message) {

@@ -46,15 +46,16 @@ public class ClientWindow extends JFrame implements ActionListener {
     /**
      * Create the application.
      */
-    public ClientWindow( Client client ) {
+    public ClientWindow( Client client, String name ) {
         this.client = client;
-        initialize();
+        initialize( name );
     }
     
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize() {
+    private void initialize(String name) {
+    	setTitle("Poker Texas Holdem - " + name);
         getContentPane().setBackground(new Color(35, 70, 35));
         getContentPane().setBounds(new Rectangle(0, 0, 1000, 700));
         setResizable(false);
@@ -887,6 +888,7 @@ public class ClientWindow extends JFrame implements ActionListener {
     
     public String getBid() {
         String bid = spinnerTextField.getText();
+        bid = bid.replaceAll("\u00A0","");
         spinnerTextField.setText(null);
         return bid;
     }

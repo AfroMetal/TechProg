@@ -54,6 +54,12 @@ public class ClientThread implements Runnable {
                 connectionWindow.setBtnConnectText("Connected!");
             }
             
+            if (message.startsWith("[GAMESTARTED]")) {
+                connectionWindow.setBtnConnectEnabled(false);
+                connectionWindow.setTitle("Game started...");
+                connectionWindow.setBtnConnectText(":(");
+            }
+            
             if (message.startsWith("CREATEGUI")) {
                 client.createClientWindow();
                 clientWindow = client.getClientWindow();
