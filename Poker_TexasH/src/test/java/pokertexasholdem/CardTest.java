@@ -42,7 +42,7 @@ public class CardTest {
 		card.setSuit(suitD);
 		assertEquals(suitD, card.getSuit());
 		// if card's String representation is as expected
-		assertEquals("3 of Diamonds", card.toString());
+		assertEquals("3♦", card.toString());
 	}
 
 }
