@@ -3,7 +3,7 @@ package pokertexasholdem.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -13,7 +13,7 @@ public class ClientThread implements Runnable {
     
     private Client client;
     private Socket socket;
-    private PrintWriter out = null;
+    //private PrintWriter out = null;
     private BufferedReader in = null;
     private ConnectionWindow connectionWindow;
     private ClientWindow clientWindow;
@@ -30,7 +30,7 @@ public class ClientThread implements Runnable {
         String message = "";
         
         try {
-            out = new PrintWriter(socket.getOutputStream(), true);
+            //out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (NullPointerException e) {
             connectionWindow.setTitleText("No connection");
