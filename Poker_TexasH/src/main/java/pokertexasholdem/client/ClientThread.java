@@ -153,7 +153,7 @@ public class ClientThread implements Runnable {
                 }
                 clientWindow.setCards("", "");
             }
-            // TODO implement in Table
+
             if (message.startsWith("CARDPLAYER")) {
                 // parts[0] = "Player#" parts[1] = <rank><suit> parts[2] = <rank><suit>
                 // setCardPlayer("Card1" + parts[0], parts[1])
