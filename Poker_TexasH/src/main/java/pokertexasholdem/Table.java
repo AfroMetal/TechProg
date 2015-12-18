@@ -172,7 +172,7 @@ public class Table {
             
             if (activePlayersNum > 1) {
                 informAllPlayers("INFO Round will start shortly");
-                pause(sleeptime*3);
+                pause(sleeptime * 3);
                 playRound();
                 System.out.println("[RUN] Called method playRound()");
             } else {
@@ -210,7 +210,7 @@ public class Table {
         continueRound = betting();
         System.out.println("[ROUND] 1st betting ended");
         
-        if(continueRound) {
+        if (continueRound) {
             // FLOP, deal 3 cards to board
             dealCommunityCards(3);
             System.out.println("[ROUND] Flop dealt");
@@ -218,7 +218,7 @@ public class Table {
             continueRound = betting();
             System.out.println("[ROUND] 2nd betting ended");
             
-            if(continueRound) {
+            if (continueRound) {
                 // TURN, deal one card to board
                 dealCommunityCards(1);
                 System.out.println("[ROUND] Turn dealt");
@@ -227,7 +227,7 @@ public class Table {
                 continueRound = betting();
                 System.out.println("[ROUND] 3rd betting ended");
                 
-                if(continueRound) {
+                if (continueRound) {
                     // RIVER, deal one card to board
                     dealCommunityCards(1);
                     System.out.println("[ROUND] River dealt");
@@ -235,7 +235,7 @@ public class Table {
                     // do third, last betting
                     continueRound = betting();
                     System.out.println("[ROUND] 4th betting ended");
-                    if(continueRound) {
+                    if (continueRound) {
                         // SHOWDOWN, evaluate players
                         showdown();
                         System.out.println("[ROUND] Showdown ended");
@@ -345,110 +345,110 @@ public class Table {
             // TODO: debug NullPointerException
             if (actor.isAllIn()) {
                 action = Action.CHECK;
-                playersToBet--;
             }
             // Actor can choose how to act
-            else {
-                String legalActions = getLegalActions(actor);
-                response = informPlayer(("NOWACT " + minBet + "#" + legalActions), actor, true);
-                action = getActionFromResponse(response);
-                actionBet = getBetFromResponse(response);
-                
-                // if player wants to raise for more than he have, its all-in
-                if(actionBet > actor.getMoney()) {
-                	actionBet = actor.getMoney();
-                	action = Action.ALL_IN;
+            String legalActions = getLegalActions(actor);
+            response = informPlayer(("NOWACT " + minBet + "#" + legalActions), actor, true);
+            action = getActionFromResponse(response);
+            actionBet = getBetFromResponse(response);
+            
+            // if player wants to raise for more than he have, its all-in
+            if (actionBet > actor.getMoney()) {
+                actionBet = actor.getMoney();
+                action = Action.ALL_IN;
+            }
+            
+            playersToBet--;
+            
+            if (action == Action.CHECK) {
+                // nothing to do, dude
+            } else if (action == Action.ALL_IN) {
+                actionBet = actor.getMoney();
+                actor.allIn();
+                int raiseAmount = actionBet - (bet - actor.getBet());
+                bet += raiseAmount;
+                minBet = raiseAmount;
+                actor.setBet(actor.getBet() + actionBet);
+                actor.pay(actionBet);
+                contributePot(actionBet);
+                // all players get another round
+                playersToBet = activePlayersNum;
+            } else if (action == Action.CALL) {
+                int toSettleBet = (bet - actor.getBet());
+                if (toSettleBet == actor.getMoney()) {
+                    actor.isAllIn();
+                    action = Action.ALL_IN;
                 }
+                actor.pay(toSettleBet);
+                actor.setBet(actor.getBet() + toSettleBet);
+                contributePot(toSettleBet);
+            } else if (action == Action.BET) {
+                int betAmount = actionBet;
+                actor.setBet(betAmount);
+                actor.pay(betAmount);
+                contributePot(betAmount);
+                bet = betAmount;
+                minBet = betAmount;
+                // all players get another round
+                playersToBet = activePlayersNum;
+            } else if (action == Action.RAISE) {
+                int raiseAmount = actionBet;
+                bet += raiseAmount;
+                minBet = raiseAmount;
+                int toRaiseBet = (bet - actor.getBet());
+                actor.setBet(bet);
+                actor.pay(toRaiseBet);
+                contributePot(toRaiseBet);
+                // all players get another round
+                playersToBet = activePlayersNum;
+            } else if (action == Action.FOLD) {
+                actor.setHand(null);
+                actor.setLastAction(action);
+                activePlayers.remove(actor);
+                activePlayersNum = activePlayers.size();
+                actorPosition--;
                 
-                playersToBet--;
-                
-                if (action == Action.CHECK) {
-                    // nothing to do, dude
-                } else if (action == Action.ALL_IN) {
-                	actionBet = actor.getMoney();
-                    actor.allIn();
-                    int raiseAmount = actionBet - (bet - actor.getBet());
-                    bet += raiseAmount;
-                    minBet = raiseAmount;
-                    actor.setBet(actor.getBet() + actionBet);
-                    actor.pay(actionBet);
-                    contributePot(actionBet);
-                    // all players get another round
-                    playersToBet = activePlayersNum;
-                } else if (action == Action.CALL) {
-                    int toSettleBet = (bet - actor.getBet());
-                    if(toSettleBet == actor.getMoney()) {
-                        actor.isAllIn();
-                        action = Action.ALL_IN;
+                // only one player left, give him the money
+                if (activePlayersNum == 1) {
+                    Player winner = activePlayers.get(0);
+                    int winAmount = getTotalPot();
+                    winner.win(winAmount);
+                    for (Pot pot : pots) {
+                        pot.clearPot();
                     }
-                    actor.pay(toSettleBet);
-                    actor.setBet(actor.getBet() + toSettleBet);
-                    contributePot(toSettleBet);
-                } else if (action == Action.BET) {
-                    int betAmount = actionBet;
-                    actor.setBet(betAmount);
-                    actor.pay(betAmount);
-                    contributePot(betAmount);
-                    bet = betAmount;
-                    minBet = betAmount;
-                    // all players get another round
-                    playersToBet = activePlayersNum;
-                } else if (action == Action.RAISE) {
-                    int raiseAmount = actionBet;
-                    bet += raiseAmount;
-                    minBet = raiseAmount;
-                    int toRaiseBet = (bet - actor.getBet());
-                    actor.setBet(bet);
-                    actor.pay(toRaiseBet);
-                    contributePot(toRaiseBet);
-                    // all players get another round
-                    playersToBet = activePlayersNum;
-                } else if (action == Action.FOLD) {
-                    actor.setHand(null);
-                    actor.setLastAction(action);
-                    activePlayers.remove(actor);
-                    activePlayersNum = activePlayers.size();
-                    actorPosition--;
+                    playersToBet = 0;
                     
-                    // only one player left, give him the money
-                    if (activePlayersNum == 1) {
-                        Player winner = activePlayers.get(0);
-                        int winAmount = getTotalPot();
-                        winner.win(winAmount);
-                        playersToBet = 0;
-                        
-                        // inform about actors action
-                        String message = "ACTION " + "Player" + playersList.indexOf(actor) + " FOLD";
-                        informAllPlayers(message);
-                        // inform about players bet amount
-                        message = "BET " + "Player" + playersList.indexOf(actor) + " $" + actor.getBet();
-                        informAllPlayers(message);
-                        // update players money
-                        message = "MONEY Player" + playersList.indexOf(actor) + " " + actor.getMoney();
-                        informAllPlayers(message);
-                        // display info about play
-                        message = "INFO " + actor.getName() + " " + actor.getLastAction().toString();
-                        informAllPlayers(message);
-                        pause(sleeptime);
-                        
-                        message = "INFO " + winner.getName() + " wins $" + winAmount;
-                        informAllPlayers(message);
-                        
-                        message = "MONEY Player" + playersList.indexOf(winner) + " " + winner.getMoney();
-                        informAllPlayers(message);
-                        
-                        informAllPlayers("POT " + getTotalPot());
-                        
-                        pause(sleeptime * 2);
-                        
-                        continueRound = false;
-                    }
+                    informAllPlayers("POT " + getTotalPot());
+                    // inform about actors action
+                    String message = "ACTION " + "Player" + playersList.indexOf(actor) + " FOLD";
+                    informAllPlayers(message);
+                    // inform about players bet amount
+                    message = "BET " + "Player" + playersList.indexOf(actor) + " $" + actor.getBet();
+                    informAllPlayers(message);
+                    // update players money
+                    message = "MONEY Player" + playersList.indexOf(actor) + " " + actor.getMoney();
+                    informAllPlayers(message);
+                    // display info about play
+                    message = "INFO " + actor.getName() + " " + actor.getLastAction().toString();
+                    informAllPlayers(message);
+                    pause(sleeptime);
+                    
+                    message = "INFO " + winner.getName() + " wins $" + winAmount;
+                    informAllPlayers(message);
+                    
+                    message = "MONEY Player" + playersList.indexOf(winner) + " " + winner.getMoney();
+                    informAllPlayers(message);
+                    
+                    pause(sleeptime * 2);
+                    
+                    continueRound = false;
                 }
             }
             actor.setLastAction(action);
             if (playersToBet > 0) {
                 // inform about actors action
-                String message = "ACTION " + "Player" + playersList.indexOf(actor) + " " + actor.getLastAction().getName();
+                String message = "ACTION " + "Player" + playersList.indexOf(actor) + " "
+                        + actor.getLastAction().getName();
                 informAllPlayers(message);
                 // inform about players bet amount
                 message = "BET " + "Player" + playersList.indexOf(actor) + " $" + actor.getBet();
@@ -462,9 +462,8 @@ public class Table {
                 // update pot value
                 message = "POT " + getTotalPot();
                 informAllPlayers(message);
-                
-                pause(sleeptime);
             }
+            pause(sleeptime);
         }
         
         // reset bets
