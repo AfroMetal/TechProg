@@ -1,4 +1,4 @@
-package pokertexasholdem;
+package pokertexasholdem.client;
 
 import java.net.Socket;
 import java.util.Arrays;
@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
 
+import pokertexasholdem.Card;
+import pokertexasholdem.RateComparator;
 import pokertexasholdem.Card.Ranks;
 import pokertexasholdem.Card.Suits;
-import pokertexasholdem.client.Client;
-import pokertexasholdem.client.ClientThread;
 
 public class BotThread extends ClientThread {
     
