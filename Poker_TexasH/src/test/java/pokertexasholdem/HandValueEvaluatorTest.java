@@ -2,7 +2,10 @@ package pokertexasholdem;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import pokertexasholdem.Card.Ranks;
@@ -11,10 +14,33 @@ import pokertexasholdem.Card.Suits;
 public class HandValueEvaluatorTest {
 
 	private static HandValueEvaluator handEvaluator;
+	private static Hand hand;
+	private static ArrayList<Card> board;
+	private static Card[] cards;
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		board = new ArrayList<>();
+        board.add(new Card(Ranks.RANK10, Suits.SPADES));
+        board.add(new Card(Ranks.RANK2, Suits.SPADES));
+        board.add(new Card(Ranks.RANK3, Suits.SPADES));
+        board.add(new Card(Ranks.RANK4, Suits.SPADES));
+        board.add(new Card(Ranks.RANK5, Suits.SPADES));
+		
+		cards = new Card[2];
+		cards[0] = new Card(Ranks.RANK8, Suits.SPADES);
+		cards[1] = new Card(Ranks.RANKK, Suits.HEARTS);
+		hand = new Hand(cards);
+	}
 
 	@Before
 	public void setUp() throws Exception {
 		handEvaluator = new HandValueEvaluator();
+	}
+	
+	@Test
+	public void HandValueEvaluator(){
+		handEvaluator = new HandValueEvaluator(board, hand);
 	}
 
 	@Test
@@ -36,6 +62,8 @@ public class HandValueEvaluatorTest {
 		handEvaluator.addCardToEvaluate(card6, 6);
 
 		assertEquals(HandValue.HIGH_CARD, handEvaluator.isSpecialValue());
+		
+		assertEquals(368670, handEvaluator.getSummaryValue());
 	}
 
 	@Test
@@ -103,6 +131,7 @@ public class HandValueEvaluatorTest {
 		assertEquals(Ranks.RANKK.getRate(), handEvaluator.ratings[3]);
 		assertEquals(Ranks.RANKQ.getRate(), handEvaluator.ratings[4]);
 		assertEquals(Ranks.RANK9.getRate(), handEvaluator.ratings[5]);
+		
 	}
 
 	@Test
@@ -283,6 +312,8 @@ public class HandValueEvaluatorTest {
 		assertEquals(Ranks.RANKJ.getRate(), handEvaluator.ratings[3]);
 		assertEquals(Ranks.RANK9.getRate(), handEvaluator.ratings[4]);
 		assertEquals(Ranks.RANK3.getRate(), handEvaluator.ratings[5]);
+		
+		assertEquals(HandValue.FLUSH, handEvaluator.isSpecialValue());
 	}
 
 	@Test
