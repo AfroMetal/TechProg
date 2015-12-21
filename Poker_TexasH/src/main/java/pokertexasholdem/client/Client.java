@@ -13,7 +13,7 @@ public class Client {
     private ConnectionWindow connectionWindow;
     private ClientWindow clientWindow;
     
-    Client() {
+    public Client() {
         connectionWindow = new ConnectionWindow(this);
     }
     
