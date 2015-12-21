@@ -17,7 +17,6 @@ public class HandValueEvaluatorTest {
 	private static Hand hand;
 	private static ArrayList<Card> board;
 	private static Card[] cards;
-	private static HandValue handValue;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -43,7 +42,7 @@ public class HandValueEvaluatorTest {
 	public void HandValueEvaluator(){
 		handEvaluator = new HandValueEvaluator(board, hand);
 		
-		assertEquals("One Pair", handValue.ONE_PAIR.toString());
+		assertEquals("One Pair", HandValue.ONE_PAIR.toString());
 	}
 
 	@Test

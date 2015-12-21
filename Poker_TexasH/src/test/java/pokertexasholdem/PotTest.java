@@ -15,9 +15,6 @@ public class PotTest {
 	private static Player player,player1;
 	private static String name;
 	private static int money;
-	private static int actualMoney;
-	private static int smallBlind;
-	private static int bigBlind;
 	private static Socket socket = null;
 	private static int partialBet;
 	
@@ -25,9 +22,6 @@ public class PotTest {
 	public static void setUpBeforeClass() throws Exception {
 		name = "Player1";
 		money = 500;
-		actualMoney = money;
-		smallBlind = 10;
-		bigBlind = 20;
 		partialBet= 10;
 		
 	}
