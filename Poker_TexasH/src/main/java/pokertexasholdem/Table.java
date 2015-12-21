@@ -284,7 +284,7 @@ public class Table {
         informAllPlayers("POT " + getTotalPot());
         informAllPlayers("ACTION Player" + playersList.indexOf(actor) + " SmallBlind");
         informAllPlayers("BET Player" + playersList.indexOf(actor) + " $" + smallBlind);
-        informAllPlayers("INFO " + actor.getName() + " posts small blind of " + smallBlind);
+        informAllPlayers("INFO " + actor.getName() + " posts small blind of $" + smallBlind);
         pause(sleeptime);
     }
     
@@ -298,7 +298,7 @@ public class Table {
         informAllPlayers("POT " + getTotalPot());
         informAllPlayers("ACTION Player" + playersList.indexOf(actor) + " BigBlind");
         informAllPlayers("BET Player" + playersList.indexOf(actor) + " $" + bigBlind);
-        informAllPlayers("INFO " + actor.getName() + " posts big blind of " + bigBlind);
+        informAllPlayers("INFO " + actor.getName() + " posts big blind of $" + bigBlind);
         pause(sleeptime);
     }
     
@@ -342,35 +342,36 @@ public class Table {
             int actionBet;
             
             // Actor is all-in, so he checks
-            // TODO: debug NullPointerException
             if (actor.isAllIn()) {
                 action = Action.CHECK;
+                actionBet = 0;
+            } else {
+                // Actor can choose how to act
+                String legalActions = getLegalActions(actor);
+                response = informPlayer(("NOWACT " + minBet + "#" + bet + "#" + legalActions), actor, true);
+                action = getActionFromResponse(response);
+                actionBet = getBetFromResponse(response);
+                
+                // if player wants to raise for more than he have, its all-in
+                if (actionBet > actor.getMoney()) {
+                    actionBet = actor.getMoney();
+                    action = Action.ALL_IN;
+                }
             }
-            // Actor can choose how to act
-            String legalActions = getLegalActions(actor);
-            response = informPlayer(("NOWACT " + minBet + "#" + legalActions), actor, true);
-            action = getActionFromResponse(response);
-            actionBet = getBetFromResponse(response);
-            
-            // if player wants to raise for more than he have, its all-in
-            if (actionBet > actor.getMoney()) {
-                actionBet = actor.getMoney();
-                action = Action.ALL_IN;
-            }
-            
             playersToBet--;
             
             if (action == Action.CHECK) {
                 // nothing to do, dude
             } else if (action == Action.ALL_IN) {
-                actionBet = actor.getMoney();
+                // TODO check if works
+                int allMoney = actor.getMoney();
                 actor.allIn();
-                int raiseAmount = actionBet - (bet - actor.getBet());
-                bet += raiseAmount;
-                minBet = raiseAmount;
-                actor.setBet(actor.getBet() + actionBet);
-                actor.pay(actionBet);
-                contributePot(actionBet);
+                int toRaiseBet = (bet - actor.getBet());
+                bet += allMoney;
+                minBet = toRaiseBet;
+                actor.setBet(actor.getBet() + allMoney);
+                actor.pay(allMoney);
+                contributePot(allMoney);
                 // all players get another round
                 playersToBet = activePlayersNum;
             } else if (action == Action.CALL) {
@@ -445,31 +446,30 @@ public class Table {
                 }
             }
             actor.setLastAction(action);
-            if (playersToBet > 0) {
-                // inform about actors action
-                String message = "ACTION " + "Player" + playersList.indexOf(actor) + " "
-                        + actor.getLastAction().getName();
-                informAllPlayers(message);
-                // inform about players bet amount
-                message = "BET " + "Player" + playersList.indexOf(actor) + " $" + actor.getBet();
-                informAllPlayers(message);
-                // update players money
-                message = "MONEY Player" + playersList.indexOf(actor) + " " + actor.getMoney();
-                informAllPlayers(message);
-                // display info about play
-                message = "INFO " + actor.getName() + " " + actor.getLastAction().toString();
-                informAllPlayers(message);
-                // update pot value
-                message = "POT " + getTotalPot();
-                informAllPlayers(message);
-            }
+            // if (playersToBet > 0) {
+            // inform about actors action
+            String message = "ACTION " + "Player" + playersList.indexOf(actor) + " " + actor.getLastAction().getName();
+            informAllPlayers(message);
+            // inform about players bet amount
+            message = "BET " + "Player" + playersList.indexOf(actor) + " $" + actor.getBet();
+            informAllPlayers(message);
+            // update players money
+            message = "MONEY Player" + playersList.indexOf(actor) + " " + actor.getMoney();
+            informAllPlayers(message);
+            // display info about play
+            message = "INFO " + actor.getName() + " " + actor.getLastAction().toString();
+            informAllPlayers(message);
+            // update pot value
+            message = "POT " + getTotalPot();
+            informAllPlayers(message);
+            // }
             pause(sleeptime);
         }
         
         // reset bets
         for (Player player : activePlayers) {
             player.setBet(0);
-            player.setLastAction(null);
+            // player.setLastAction(null);
         }
         informAllPlayers("RESETBETS");
         
@@ -497,7 +497,7 @@ public class Table {
     private String getLegalActions(Player actor) {
         String legalActions = "";
         // if player is all-in he can only check and wait for showdown
-        if (actor.getLastAction() == Action.ALL_IN) {
+        if (actor.getLastAction() == Action.ALL_IN || actor.isAllIn()) {
             legalActions = legalActions.concat(" btnCheck");
         }
         // else if player is not all-in and can something more

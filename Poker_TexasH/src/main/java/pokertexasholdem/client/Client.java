@@ -17,8 +17,8 @@ public class Client {
         connectionWindow = new ConnectionWindow(this);
     }
     
-    public void connect(String adress, String port, String name) {
-    	this.name = name;
+    public void connect(String adress, String port, String name, boolean isBot) {
+        this.name = name;
         try {
             
             socket = new Socket(adress, Integer.parseInt(port));
@@ -30,9 +30,17 @@ public class Client {
                 connectionWindow.setTitle("No I/O");
             }
             
-            clientThread = new ClientThread(this, socket);
+            Thread t;
             
-            Thread t = new Thread(clientThread);
+            if (isBot == false) {
+                clientThread = new ClientThread(this, socket);
+                
+                t = new Thread(clientThread);
+            } else {
+                clientThread = new BotThread(this, socket);
+                
+                t = new Thread(clientThread);
+            }
             t.start();
             
         } catch (IOException e) {
@@ -52,7 +60,7 @@ public class Client {
     public ClientThread getClientThread() {
         return clientThread;
     }
-
+    
     public static void main(String[] args) {
         
         new Client();
@@ -72,13 +80,12 @@ public class Client {
     public ConnectionWindow getConnectionWindow() {
         return connectionWindow;
     }
-
+    
     /**
      * @return the clientWindow
      */
     public ClientWindow getClientWindow() {
         return clientWindow;
     }
-
-
+    
 }

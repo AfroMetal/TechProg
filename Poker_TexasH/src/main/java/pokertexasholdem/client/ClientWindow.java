@@ -1012,7 +1012,7 @@ public class ClientWindow extends JFrame implements ActionListener {
             getSpinnerTextField().setText("5");
         }
         if (source == mapBtnAction.get("btnCall")) {
-            message = "CALL " + getBid();
+            message = "CALL ";
             for (JButton button : getMapBtnAction().values()) {
                 button.setEnabled(false);
             }
@@ -1028,7 +1028,7 @@ public class ClientWindow extends JFrame implements ActionListener {
             getSpinnerTextField().setText("5");
         }
         if (source == mapBtnAction.get("btnCheck")) {
-            message = "CHECK " + getBid();
+            message = "CHECK ";
             for (JButton button : getMapBtnAction().values()) {
                 button.setEnabled(false);
             }
@@ -1036,7 +1036,7 @@ public class ClientWindow extends JFrame implements ActionListener {
             getSpinnerTextField().setText("5");
         }
         if (source == mapBtnAction.get("btnAllIn")) {
-            message = "ALL_IN " + getBid();
+            message = "ALL_IN ";
             for (JButton button : getMapBtnAction().values()) {
                 button.setEnabled(false);
             }
@@ -1044,7 +1044,7 @@ public class ClientWindow extends JFrame implements ActionListener {
             getSpinnerTextField().setText("5");
         }
         if (source == mapBtnAction.get("btnFold")) {
-            message = "FOLD " + getBid();
+            message = "FOLD ";
             for (JButton button : getMapBtnAction().values()) {
                 button.setEnabled(false);
             }
