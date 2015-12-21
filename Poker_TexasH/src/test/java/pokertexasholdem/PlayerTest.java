@@ -92,5 +92,10 @@ public class PlayerTest {
 		assertEquals(actualMoney, player.getMoney());
 
 		assertEquals(name, player.toString());
+		
+		player.allIn();
+		assertEquals(true, player.isAllIn());
+		
+		assertEquals(null, player.getSocket());
 	}
 }
