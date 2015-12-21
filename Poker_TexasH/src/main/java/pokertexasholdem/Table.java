@@ -348,7 +348,7 @@ public class Table {
             } else {
                 // Actor can choose how to act
                 String legalActions = getLegalActions(actor);
-                response = informPlayer(("NOWACT " + minBet + "#" + legalActions), actor, true);
+                response = informPlayer(("NOWACT " + minBet + "#" + bet + "#" + legalActions), actor, true);
                 action = getActionFromResponse(response);
                 actionBet = getBetFromResponse(response);
                 

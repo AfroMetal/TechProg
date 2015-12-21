@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JToggleButton;
 
 public class ConnectionWindow extends JFrame implements ActionListener {
     
@@ -15,6 +16,7 @@ public class ConnectionWindow extends JFrame implements ActionListener {
     private JTextField tfAdress;
     private JTextField tfPort;
     private JButton btnConnect;
+    private JToggleButton tglbtnDoYouWant;
     
     private Client client;
     
@@ -27,7 +29,7 @@ public class ConnectionWindow extends JFrame implements ActionListener {
         this.client = client;
         
         setTitle("Connection");
-        setBounds(100, 100, 300, 300);
+        setBounds(100, 100, 300, 340);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -62,9 +64,15 @@ public class ConnectionWindow extends JFrame implements ActionListener {
         
         btnConnect = new JButton("Connect");
         btnConnect.setFont(new Font("Cambria Math", Font.PLAIN, 18));
-        btnConnect.setBounds(79, 221, 125, 35);
+        btnConnect.setBounds(49, 265, 186, 35);
         getContentPane().add(btnConnect);
         btnConnect.addActionListener(this);
+        
+        tglbtnDoYouWant = new JToggleButton("select me to create Bot");
+        tglbtnDoYouWant.setFont(new Font("Cambria Math", Font.PLAIN, 12));
+        tglbtnDoYouWant.setBounds(49, 231, 186, 23);
+        getContentPane().add(tglbtnDoYouWant);
+        
         
         setVisible(true);
     }
@@ -87,9 +95,10 @@ public class ConnectionWindow extends JFrame implements ActionListener {
         String adress = tfAdress.getText();
         String port = tfPort.getText();
         String name = tfName.getText();
+        boolean isBot = tglbtnDoYouWant.isSelected();
         
         if (connect.getSource() == btnConnect) {
-            client.connect(adress, port, name);
+            client.connect(adress, port, name, isBot);
         }
         
     }
