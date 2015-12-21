@@ -14,7 +14,6 @@ public class TableTest {
 	private static int money;
 	private static int smallBlind;
 	private static HashMap<Socket, String> playersSocketsNames;
-	private static int activePlayersNum;
 	
 	
 	@BeforeClass
@@ -25,8 +24,6 @@ public class TableTest {
 		
 		money = 100;
 		smallBlind = 20;
-		
-		activePlayersNum = 5;
 	}
 
 	@Test

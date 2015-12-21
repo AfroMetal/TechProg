@@ -3,7 +3,7 @@ package pokertexasholdem;
 import static org.junit.Assert.*;
 
 import java.net.Socket;
-import java.util.Set;
+
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -12,7 +12,6 @@ import org.junit.Test;
 public class PotTest {
 
 	private static Pot pot;
-	private Set<Player> contributorsSet;
 	private static Player player,player1;
 	private static String name;
 	private static int money;
