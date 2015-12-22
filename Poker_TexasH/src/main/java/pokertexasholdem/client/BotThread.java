@@ -141,6 +141,8 @@ public class BotThread extends ClientThread {
             // parts[0] = <rankCard1><suitCard1> parts[1] =
             // <rankCard2><suitCard2>
             String[] parts = message.substring(10).split(" ");
+            parts[0] = "5♣";
+            parts[1] = "5♥";
             Ranks rank = null;
             // ♠♣♥♦
             Suits suit = null;
