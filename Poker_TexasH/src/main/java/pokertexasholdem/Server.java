@@ -27,7 +27,7 @@ public final class Server {
         try {
             socket = new ServerSocket(port);
         } catch (IOException ioe) {
-            System.out.println("[SERVER] Could not listen on port" + port);
+            System.out.println("[SERVER] Could not listen on port " + port);
             return;
         }
         System.out.println("[SERVER] Started with settings: players=" + playersNumber + ", money=$" + money
