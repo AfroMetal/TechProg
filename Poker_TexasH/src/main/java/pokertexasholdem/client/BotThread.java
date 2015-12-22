@@ -14,13 +14,13 @@ import pokertexasholdem.Card.Suits;
 public class BotThread extends ClientThread {
     
     private TreeSet<Card> cards;
-    private RateComparator rateComparator = new RateComparator();
+    private final RateComparator rateComparator = new RateComparator();
     private final int tightness;
     private final int aggression;
     
     public BotThread( Client client, Socket socket ) {
         super(client, socket);
-        Random random = new Random();
+        final Random random = new Random();
         tightness = random.nextInt(51);
         System.out.println("[THREAD] Bot's tightness = " + tightness);
         aggression = random.nextInt(51) + 50;
@@ -256,7 +256,7 @@ public class BotThread extends ClientThread {
                                 amount = Integer.toString(betAmount);
                             } else if (legalActionsList.contains("btnRaise")) {
                                 action = "RAISE ";
-                                amount = Integer.toString(betAmount);;
+                                amount = Integer.toString(betAmount);
                             } else if (legalActionsList.contains("btnCall")) {
                                 action = "CALL ";
                             } else if (legalActionsList.contains("btnCheck")) {
@@ -300,9 +300,9 @@ public class BotThread extends ClientThread {
         int rankDiff = highRank - lowRank;
         int gap = (rankDiff > 1) ? rankDiff - 1 : 0;
         boolean isPair = (rank1 == rank2);
-        boolean isSuited = (suit1 == suit2);
+        boolean isSuited = (suit1.equals(suit2));
         
-        double score = 0;
+        double score = 0.0;
         
         // 1. Base score highest rank only
         if (highRank == Ranks.RANKA.getRate()) {

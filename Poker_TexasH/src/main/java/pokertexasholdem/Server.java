@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-public class Server {
+public final class Server {
     
     private static volatile Server instance = null;
     private static int playersNumber;
@@ -28,7 +28,7 @@ public class Server {
             socket = new ServerSocket(port);
         } catch (IOException ioe) {
             System.out.println("[SERVER] Could not listen on port" + port);
-            System.exit(-1);
+            return;
         }
         System.out.println("[SERVER] Started with settings: players=" + playersNumber + ", money=$" + money
                 + ", smallBlind=$" + smallBlind + ", on port=" + port);
@@ -104,7 +104,7 @@ public class Server {
         }
     }
     
-    public static void main(String[] args) {
+    public static void main(String... args) {
         // TODO check if players <11 and smallBlind<money
         try {
             playersNumber = Integer.parseInt(args[0]);
@@ -112,12 +112,10 @@ public class Server {
             smallBlind = Integer.parseInt(args[2]);
             port = Integer.parseInt(args[3]);
         } catch (NumberFormatException nfe) {
-            System.out.println(
-                    "Arguments have to be numbers representing in order: <players number> <start money> <small blind> <port>");
+            System.out.println("Arguments have to be numbers representing in order: <players number> <start money> <small blind> <port>");
             return;
         } catch (ArrayIndexOutOfBoundsException aie) {
-            System.out
-                    .println("Give 4 number parameters in order: <players number> <start money> <small blind> <port>");
+            System.out.println("Give 4 number parameters in order: <players number> <start money> <small blind> <port>");
             return;
         }
         

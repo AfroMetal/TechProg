@@ -39,7 +39,7 @@ public class HandValueEvaluatorTest {
 	}
 	
 	@Test
-	public void HandValueEvaluator(){
+	public void testHandValueEvaluator(){
 		handEvaluator = new HandValueEvaluator(board, hand);
 		
 		assertEquals("One Pair", HandValue.ONE_PAIR.toString());

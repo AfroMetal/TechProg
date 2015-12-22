@@ -13,8 +13,8 @@ public class ClientThread implements Runnable {
     
     protected Client client;
     protected Socket socket;
-    protected PrintWriter out = null;
-    protected BufferedReader in = null;
+    protected PrintWriter out;
+    protected BufferedReader in;
     protected ConnectionWindow connectionWindow;
     private ClientWindow clientWindow;
     
