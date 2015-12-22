@@ -16,45 +16,45 @@ import java.util.TreeMap;
 public class Table {
     
     /** List of Players at a table */
-    private List<Player> playersList;
+    protected List<Player> playersList;
     
-    private int smallBlind;
-    private int bigBlind;
+    protected int smallBlind;
+    protected int bigBlind;
     
     /** Deck used in current hand */
-    private Deck deck;
+    protected Deck deck;
     
     /** Community cards */
-    private List<Card> board;
+    protected List<Card> board;
     
     /** Current dealer player */
-    private Player dealer;
+    protected Player dealer;
     
     /** Current dealer player position */
-    private int dealerPosition;
+    protected int dealerPosition;
     
     /** Number of active Players (that still have money) */
-    private int activePlayersNum;
+    protected int activePlayersNum;
     
     /** List of Players that can afford at least big blind */
-    private List<Player> activePlayers;
+    protected List<Player> activePlayers;
     
     /** Player to do next move */
-    private Player actor;
+    protected Player actor;
     
     /** Player to do next move position */
     private int actorPosition;
     
     /** List of pots (main and side pots if exist) */
-    private List<Pot> pots;
+    protected List<Pot> pots;
     
     /** Minimum bet in current hand */
-    private int minBet;
+    protected int minBet;
     
     /** Current bet in current hand */
-    private int bet;
+    protected int bet;
     
-    private long sleeptime = 2000;
+    protected long sleeptime = 2000;
     
     /**
      * Constructor of table
@@ -120,7 +120,7 @@ public class Table {
     /**
      * Send message to all clients
      */
-    private void informAllPlayers(String message) {
+    protected void informAllPlayers(String message) {
         for (Player player : playersList) {
             informPlayer(message, player, false);
         }
@@ -129,7 +129,7 @@ public class Table {
     /**
      * Send message to concrete player
      */
-    private String informPlayer(String message, Player player, boolean waitForReply) {
+    protected String informPlayer(String message, Player player, boolean waitForReply) {
         PrintWriter out = null;
         BufferedReader in = null;
         try {
@@ -189,7 +189,7 @@ public class Table {
     /**
      * Single round ended with showdown
      */
-    private void playRound() {
+    protected void playRound() {
         boolean continueRound;
         
         resetRound();
@@ -248,7 +248,7 @@ public class Table {
     /**
      * Prepares table for next round
      */
-    private void resetRound() {
+    protected void resetRound() {
         // Preparing table for next hand
         board.clear();
         pots.clear();
@@ -479,7 +479,7 @@ public class Table {
     /**
      * @return total amount of money bet during round
      */
-    private int getTotalPot() {
+    protected int getTotalPot() {
         int total = 0;
         for (Pot pot : pots) {
             total += pot.getValue();
@@ -494,7 +494,7 @@ public class Table {
      *            player
      * @return allowed actions set
      */
-    private String getLegalActions(Player actor) {
+    protected String getLegalActions(Player actor) {
         String legalActions = "";
         // if player is all-in he can only check and wait for showdown
         if (actor.getLastAction() == Action.ALL_IN || actor.isAllIn()) {
@@ -541,7 +541,7 @@ public class Table {
      *            string output from client
      * @return action enum
      */
-    private Action getActionFromResponse(String response) {
+    protected Action getActionFromResponse(String response) {
         Action action = null;
         
         if (response.startsWith("BET"))
@@ -567,7 +567,7 @@ public class Table {
      *            string output from client
      * @return bet amount
      */
-    private int getBetFromResponse(String response) {
+    protected int getBetFromResponse(String response) {
         int index = response.indexOf(" ") + 1;
         int bet = 0;
         try {
@@ -584,7 +584,7 @@ public class Table {
      * @param amount
      *            number of cards to deal
      */
-    private void dealCommunityCards(int amount) {
+    protected void dealCommunityCards(int amount) {
         for (int j = 0; j < amount; j++) {
             Card card = deck.drawFromDeck();
             board.add(card);
@@ -689,7 +689,7 @@ public class Table {
      * @param amount
      *            amount to contribute
      */
-    private void contributePot(int amount) {
+    protected void contributePot(int amount) {
         for (Pot pot : pots) {
             if (!pot.hasContributed(actor)) {
                 // regular call/bet/raise
@@ -717,7 +717,7 @@ public class Table {
     /**
      * Moves dealer to next active player
      */
-    private void nextDealer() {
+    protected void nextDealer() {
         dealerPosition = ((activePlayers.indexOf(dealer) + 1) % activePlayers.size());
         dealer = activePlayers.get(dealerPosition);
         System.out.println("[DEALER] " + dealer.getName());
@@ -731,7 +731,7 @@ public class Table {
      * @param nextToWho
      *            sets actor to player next to that player
      */
-    private void nextActor(Player nextToWho) {
+    protected void nextActor(Player nextToWho) {
         actorPosition = ((activePlayers.indexOf(nextToWho) + 1) % activePlayers.size());
         actor = activePlayers.get(actorPosition);
         System.out.println("[ACTOR] " + actor.getName());
@@ -837,6 +837,13 @@ public class Table {
         return bet;
     }
     
+    /**
+     * @param sleeptime the sleeptime to set
+     */
+    protected void setSleeptime(long sleeptime) {
+        this.sleeptime = sleeptime;
+    }
+
     public void pause(long sleeptime) {
         Object obj = new Object();
         if (sleeptime > 0) {
@@ -848,5 +855,9 @@ public class Table {
                 }
             }
         }
+    }
+    
+    Table makeTable(HashMap<Socket, String> playersSocketsNames, int money, int smallBlind) {
+        return new Table(playersSocketsNames, money, smallBlind);
     }
 }
