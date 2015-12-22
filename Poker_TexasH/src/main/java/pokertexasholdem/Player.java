@@ -75,6 +75,7 @@ public class Player {
     
     public void pay(int amount) {
         money -= amount;
+        if (money <= 0) allIn(); 
     }
     
     public int getMoney() {
