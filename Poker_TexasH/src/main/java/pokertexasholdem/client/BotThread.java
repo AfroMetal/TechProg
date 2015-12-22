@@ -293,16 +293,27 @@ public class BotThread extends ClientThread {
             throw new IllegalArgumentException("Invalid number of cards: " + cards.size());
         }
         // Analyze cards.
+        System.out.println("1");
         int rank1 = cards.last().getRate();
+        System.out.println("2");
         Card.Suits suit1 = cards.last().getSuit();
+        System.out.println("3");
         int rank2 = cards.lower(cards.last()).getRate();
+        System.out.println("4");
         Card.Suits suit2 = cards.lower(cards.last()).getSuit();
+        System.out.println("5");
         int highRank = Math.max(rank1, rank2);
+        System.out.println("6");
         int lowRank = Math.min(rank1, rank2);
+        System.out.println("7");
         int rankDiff = highRank - lowRank;
+        System.out.println("8");
         int gap = (rankDiff > 1) ? rankDiff - 1 : 0;
+        System.out.println("9");
         boolean isPair = (rank1 == rank2);
+        System.out.println("10");
         boolean isSuited = (suit1.equals(suit2));
+        System.out.println("11");
         
         double score = 0.0;
         
