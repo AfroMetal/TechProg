@@ -20,7 +20,7 @@ public class Card {
 		private String rankString;
 		private int rate;
 
-		private Ranks(String rankString, int rate) {
+		Ranks(String rankString, int rate) {
 			this.rankString = rankString;
 			this.rate = rate;
 		}
@@ -37,15 +37,21 @@ public class Card {
 
 	public enum Suits {
 	        // ♠♣♥♦
-		SPADES("♠"), 
-		CLUBS("♣"), 
-		DIAMONDS("♦"), 
-		HEARTS("♥");
+		SPADES("♠", 0),
+		CLUBS("♣", 1),
+		DIAMONDS("♦", 2),
+		HEARTS("♥", 3);
 
 		private String suitString;
+		private int rate;
 
-		private Suits(String suitString) {
+		Suits(String suitString, int rate) {
 			this.suitString = suitString;
+			this.rate = rate;
+		}
+
+		public int getRate() {
+			return rate;
 		}
 
 		@Override
@@ -64,6 +70,10 @@ public class Card {
 
 	public int getRate() {
 		return this.getRank().getRate();
+	}
+
+	public int getSuitRate() {
+		return this.getSuit().getRate();
 	}
 
 	public Ranks getRank() {

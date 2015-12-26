@@ -7,14 +7,14 @@ import java.util.Random;
 import java.util.TreeSet;
 
 import pokertexasholdem.Card;
-import pokertexasholdem.RateComparator;
+import pokertexasholdem.CardComparator;
 import pokertexasholdem.Card.Ranks;
 import pokertexasholdem.Card.Suits;
 
 public class BotThread extends ClientThread {
     
     private TreeSet<Card> cards;
-    private final RateComparator rateComparator = new RateComparator();
+    private final CardComparator cardComparator = new CardComparator();
     private final int tightness;
     private final int aggression;
     
@@ -22,8 +22,9 @@ public class BotThread extends ClientThread {
         super(client, socket);
         final Random random = new Random();
         tightness = random.nextInt(51);
+        cards = new TreeSet<Card>(cardComparator);
         System.out.println("[THREAD] Bot's tightness = " + tightness);
-        aggression = random.nextInt(51) + 50;
+        aggression = random.nextInt(101);
         System.out.println("[THREAD] Bot's agression = " + aggression);
     }
     
@@ -80,11 +81,11 @@ public class BotThread extends ClientThread {
         if (message.startsWith("DEALER")) {
             // not implemented
         }
-        
+
         if (message.startsWith("ACTOR")) {
             // not implemented
         }
-        
+
         if (message.startsWith("POT")) {
             // not implemented
         }
@@ -94,7 +95,7 @@ public class BotThread extends ClientThread {
         }
         
         if (message.startsWith("RESETROUND")) {
-            cards = new TreeSet<Card>(rateComparator);
+            cards = new TreeSet<Card>(cardComparator);
         }
         
         if (message.startsWith("CARDPLAYER")) {
@@ -141,12 +142,13 @@ public class BotThread extends ClientThread {
             // parts[0] = <rankCard1><suitCard1> parts[1] =
             // <rankCard2><suitCard2>
             String[] parts = message.substring(10).split(" ");
-            parts[0] = "5♣";
-            parts[1] = "5♥";
             Ranks rank = null;
             // ♠♣♥♦
             Suits suit = null;
-            
+
+            parts[0] = "A♥";
+            parts[1] = "A♦";
+
             System.out.println("[THREAD] Got card: " + parts[0]);
             System.out.println("[THREAD] Got card: " + parts[1]);
             
@@ -195,7 +197,7 @@ public class BotThread extends ClientThread {
     }
     
     private String act(Integer minBet, Integer currentBet, String[] legalActions) {
-        String message = "";
+        String message;
         List<String> legalActionsList = Arrays.asList(legalActions);
         String action = "FOLD ";
         String amount = "0";
@@ -206,7 +208,7 @@ public class BotThread extends ClientThread {
         } else {
             double chenScore = getChenScore(cards);
             System.out.println("[ACT] Got chen score = " + chenScore);
-            double chenScoreToPlay = tightness * 0.15;
+            double chenScoreToPlay = tightness * 0.2;
             System.out.println("[ACT] Chen score to play = " + chenScoreToPlay);
             if ((chenScore < chenScoreToPlay)) {
                 if (legalActionsList.contains("btnCheck")) {
@@ -217,9 +219,10 @@ public class BotThread extends ClientThread {
                     action = "FOLD ";
                 }
             } else {
+                System.out.println("[ACT] Good enough hole cards, play hand.");
                 // Good enough hole cards, play hand.
-                if ((chenScore - (chenScoreToPlay + 2)) >= 0) {
-                    System.out.println("[ACT] Good cards, play hand");
+                if (chenScore > chenScoreToPlay + 2) {
+                    System.out.println("[ACT] Very good hole cards; bet or raise!");
                     // Very good hole cards; bet or raise!
                     if (aggression == 0) {
                         // Never bet.
@@ -273,8 +276,8 @@ public class BotThread extends ClientThread {
                         }
                     }
                 } else {
-                    // Decent hole cards; check or call.
                     System.out.println("[ACT] Decent cards, check or call.");
+                    // Decent hole cards; check or call.
                     if (legalActionsList.contains("btnCheck")) {
                         action = "CHECK ";
                     } else if (legalActionsList.contains("btnCall")) {
@@ -293,29 +296,21 @@ public class BotThread extends ClientThread {
             throw new IllegalArgumentException("Invalid number of cards: " + cards.size());
         }
         // Analyze cards.
-        System.out.println("1");
-        int rank1 = cards.last().getRate();
-        System.out.println("2");
-        Card.Suits suit1 = cards.last().getSuit();
-        System.out.println("3");
-        int rank2 = cards.lower(cards.last()).getRate();
-        System.out.println("4");
-        Card.Suits suit2 = cards.lower(cards.last()).getSuit();
-        System.out.println("5");
+        Card last = cards.last();
+        int rank1 = last.getRate();
+        Card.Suits suit1 = last.getSuit();
+        System.out.println("[CHEN SCORE] last: " + last.toString());
+        int rank2 = cards.lower(last).getRate();
+        System.out.println("[CHEN SCORE] lower: " + cards.lower(last));
+        Card.Suits suit2 = cards.lower(last).getSuit();
         int highRank = Math.max(rank1, rank2);
-        System.out.println("6");
         int lowRank = Math.min(rank1, rank2);
-        System.out.println("7");
         int rankDiff = highRank - lowRank;
-        System.out.println("8");
         int gap = (rankDiff > 1) ? rankDiff - 1 : 0;
-        System.out.println("9");
         boolean isPair = (rank1 == rank2);
-        System.out.println("10");
         boolean isSuited = (suit1.equals(suit2));
-        System.out.println("11");
         
-        double score = 0.0;
+        double score;
         
         // 1. Base score highest rank only
         if (highRank == Ranks.RANKA.getRate()) {
@@ -365,8 +360,7 @@ public class BotThread extends ClientThread {
         }
         
         // 6. Round half point scores up.
-        System.out.println("[CHEN SCORE] " + score);
+        System.out.println("[CHEN SCORE] Score: " + score);
         return Math.round(score);
     }
-    
 }
